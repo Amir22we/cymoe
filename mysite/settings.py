@@ -127,3 +127,9 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://cymoe-production-f8ac.up.railway.app',
+    'https://*.railway.app', 
+]
+
