@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CYMOE — Clean Your Mouse Of Emotions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="hero" aria-label="Главный экран">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-noise" aria-hidden="true"></div>
+
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="badge reveal" data-delay="0">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Полная анонимность</span>
+      </div>
+
+      <h1 class="title reveal" data-delay="60">
+        CYMOE
+        <span class="subtitle">CLEAN YOUR MOUSE OF EMOTIONS</span>
+      </h1>
+
+      <p class="lead reveal" data-delay="120">
+        Площадка, где можно <b>анонимно</b> выговориться, выпустить эмоции и оставить мысли без имени, фамилии и лишних вопросов.
+      </p>
+
+      <div class="info">
+        <div class="info-card reveal" data-delay="160">
+          <div class="info-title">Анонимно</div>
+          <div class="info-text">
+            Никто не увидит, кто ты. Публикуется только текст. Без “кто ты такой” и “почему ты так думаешь”.
+          </div>
+        </div>
+
+        <div class="info-card reveal" data-delay="220">
+          <div class="info-title">Регистрация</div>
+          <div class="info-text">
+            Нужна лишь для доступа к <b>своим записям</b>. Не для сбора данных, не для слежки, не для драмы.
+          </div>
+        </div>
+
+        <div class="info-card reveal" data-delay="280">
+          <div class="info-title">Психологи</div>
+          <div class="info-text">
+            Эта штука <b>проверена психологами</b> (да, звучит громко, но работает как идея: выписать, отпустить, жить дальше).
+          </div>
+        </div>
+      </div>
+      <div class="cta-row reveal" data-delay="340">
+      {% if request.user.is_authenticated %}
+        <a class="btn btn-primary" href="{% url 'blog:create_note' %}#start" id="startBtn">
+          Начать
+          <span class="btn-glow" aria-hidden="true"></span>
+        </a>
+      {% else %}
+        <a class="btn btn-primary" href="{% url 'blog:register' %}#start" id="startBtn">
+          Начать
+          <span class="btn-glow" aria-hidden="true"></span>
+        </a>
+      {% endif %}
+        <a class="btn btn-ghost" href="{% url 'blog:index' %}#how">
+          Как это работает
+        </a>
+      </div>
+
+      <div class="micro reveal" data-delay="400" id="how">
+        Пишешь запись → (по желанию) сохраняешь у себя → выпускаешь эмоции → идёшь жить.
+      </div>
+
+      <a class="scroll-hint" href="#start" aria-label="Прокрутить к началу">
+        <span class="scroll-hint__dot" aria-hidden="true"></span>
+        <span class="scroll-hint__text">Смотреть ниже</span>
+      </a>
+    </div>
+
+    <div class="hero-right" id="start">
+      <div class="mock reveal" data-delay="120" id="mockCard">
+        <div class="mock-top">
+          <div class="mock-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="mock-title">Новая запись</div>
+        </div>
+
+        <div class="mock-body">
+          <div class="mock-type" aria-label="Пример записи">
+            <span class="mock-type__text" id="mockType"></span>
+            <span class="mock-type__caret" aria-hidden="true"></span>
+          </div>
+
+          <div class="mock-lines" aria-hidden="true">
+            <div class="mock-line w-92"></div>
+            <div class="mock-line w-80"></div>
+            <div class="mock-line w-68"></div>
+          </div>
+
+          <div class="mock-gap"></div>
+
+          <div class="mock-chip">анонимно</div>
+          <div class="mock-chip">без оценок</div>
+          <div class="mock-chip">быстро</div>
+
+          <div class="mock-gap"></div>
+
+          
+        </div>
+
+        <div class="shine" aria-hidden="true"></div>
+      </div>
+
+      <div class="trust">
+        <div class="trust-item reveal" data-delay="260">
+          <div class="trust-num" data-count="100">%</div>
+          <div class="trust-text">уровень анонимности (в процентах)</div>
+        </div>
+        <div class="trust-item reveal" data-delay="320">
+          <div class="trust-num" data-count="0">0</div>
+          <div class="trust-text">лишних вопросов</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/index.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Профиль — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="profile">
+  <div class="profile-grid">
+
+    <div class="card card-main">
+      <div class="card-head">
+        <div class="avatar" aria-hidden="true">
+          <span class="avatar-inner">{{ request.user.username|first|upper }}</span>
+        </div>
+
+        <div class="who">
+          <h1 class="name">{{ request.user.username }}</h1>
+          <div class="meta">
+            <span class="meta-item">
+              <span class="meta-label">Дата регистрации:</span>
+              <span class="meta-value">
+                {{ request.user.date_joined|date:"d.m.Y H:i" }}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="hint" role="note">
+          <span class="hint-dot" aria-hidden="true"></span>
+          <div class="hint-text">
+            Здесь твой профиль. Никаких настоящих данных не нужно. Чем меньше личного, тем лучше.
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="{% url 'blog:user_note' %}">
+            Мои записи
+            <span class="btn-glow" aria-hidden="true"></span>
+          </a>
+
+          <a class="btn btn-ghost" href="{% url 'blog:create_note' %}">
+            Создать запись
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-danger">
+      <div class="danger-head">
+        <div class="danger-title">Аккуратно</div>
+        <div class="danger-sub">
+          Эти кнопки меняют аккаунт. Нажимать “просто посмотреть” не лучшая привычка.
+        </div>
+      </div>
+
+      <div class="danger-actions">
+        <a class="danger-btn" href="{% url 'blog:change_name' %}">
+          <span class="danger-ico" aria-hidden="true">✎</span>
+          Изменить имя
+        </a>
+
+        <a class="danger-btn" href="{% url 'blog:change_pass' %}">
+          <span class="danger-ico" aria-hidden="true">🔒</span>
+          Изменить пароль
+        </a>
+
+        <a class="danger-btn danger-btn--red" type="button" id="openDeleteModal" href="{% url 'blog:delete_profile' %}">
+          <span class="danger-ico" aria-hidden="true">🗑</span>
+          Удалить аккаунт
+        </a>
+
+        <div class="danger-note">
+          Удаление аккаунта обычно необратимо. Если ты не уверен(а), не делай этого.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal confirm delete -->
+  <div class="modal" id="deleteModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="1"></div>
+
+    <div class="modal-card" role="document" aria-label="Подтверждение удаления аккаунта">
+      <div class="modal-title">Удалить аккаунт?</div>
+      <div class="modal-text">
+        Это действие удалит аккаунт. Если у тебя есть важные записи, подумай дважды.
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-close="1">Отмена</button>
+
+        <form method="post" action="">
+          {% csrf_token %}
+          <button class="btn btn-danger" type="submit">Да, удалить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src=""></script>
+{% endblock %}

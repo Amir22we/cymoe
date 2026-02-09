@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Мои записи — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/user_note.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="my-notes">
+  <div class="head">
+    <div class="head-left">
+      <h1 class="title">Мои записи</h1>
+      <p class="subtitle">
+        Здесь все твои записи. Черновики видишь только ты.
+      </p>
+    </div>
+
+    <div class="head-right">
+      <a class="btn btn-primary" href="{% url 'blog:create_note' %}">
+        Создать запись
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
+      <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">Все записи</a>
+    </div>
+  </div>
+
+  {% if posts %}
+    <div class="grid">
+      {% for post in posts %}
+        <article class="card">
+          <div class="card-top">
+            <div class="badges">
+                <span class="badge badge-pub">Опубликовано</span>
+            </div>
+
+            <div class="date">
+              {{ post.publish }}
+            </div>
+          </div>
+
+          <h2 class="card-title">{{ post.title }}</h2>
+
+          <div class="preview" data-collapsible="1">
+            {{ post.text|truncatechars:260 }}
+          </div>
+
+          <div class="card-actions">
+            <a class="link-btn" href="{% url 'blog:detail_note' post.id %}">
+              Открыть
+            </a>
+
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty card">
+      <div class="empty-title">Пока пусто</div>
+      <div class="empty-text">
+        У тебя ещё нет записей. Начни с одной строки. Никто не требует шедевров.
+      </div>
+      <a class="btn btn-primary" href="{% url 'blog:create_note' %}">
+        Создать первую запись
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/user_note.js' %}"></script>
+{% endblock %}

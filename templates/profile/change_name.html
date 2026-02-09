@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Изменить имя — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/change_name.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="change-name">
+  <div class="wrap">
+
+    <div class="card main-card">
+      <div class="card-head">
+        <h1 class="title">Изменить имя</h1>
+        <p class="subtitle">
+          Имя видно только тебе. Не используй реальные данные — анонимность тут не для красоты.
+        </p>
+      </div>
+
+      <form class="form" method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="form-errors">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <div class="field">
+          <label class="label" for="{{ form.username.id_for_label }}">Новое имя</label>
+          <div class="control">
+            {{ form.username }}
+          </div>
+          {% if form.username.errors %}
+            <div class="error">{{ form.username.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">
+            Изменить
+            <span class="btn-glow"></span>
+          </button>
+
+          <a class="btn btn-ghost" href="{% url 'blog:profile' %}">
+            Отмена
+          </a>
+
+          <a class="btn btn-ghost btn-back" href="javascript:history.back()">
+            ← Вернуться назад
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <div class="card side-card">
+      <div class="side-title">Подсказка</div>
+      <div class="side-text">
+        Хорошее имя — это не настоящее имя.  
+        Это якорь, по которому ты узнаёшь себя, а не паспорт.
+      </div>
+      <div class="side-pill">CYMOE • Clean Your Mouse Of Emotions</div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/change_name.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Готово — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/just_created_note.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="created">
+  <div class="wrap">
+
+    <div class="card head-card">
+      <div class="head-row">
+        <div class="badge badge-ok">
+          <span class="badge-dot" aria-hidden="true"></span>
+          Запись создана
+        </div>
+
+          <div class="badge badge-pub">Опубликовано</div>
+      </div>
+
+      <h1 class="title">{{ post.title }}</h1>
+
+      <div class="meta">
+        <span class="meta-item">
+          <span class="meta-label">Автор:</span>
+          <span class="meta-value">{{ post.author }}</span>
+        </span>
+        <span class="meta-dot" aria-hidden="true">•</span>
+        <span class="meta-item">
+          <span class="meta-label">Создано:</span>
+          <span class="meta-value">
+            {{ post.publish }}
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="card note-card">
+      <div class="note-top">
+        <div class="note-title">Текст</div>
+        <div class="note-tools">
+          <button class="tool" type="button" id="copyBtn" aria-label="Скопировать текст">Копировать</button>
+          <button class="tool" type="button" id="toggleBtn" aria-label="Показать полностью">Показать полностью</button>
+        </div>
+      </div>
+
+      <div class="note-body" id="noteBody">
+        <pre class="note-text" id="noteText">{{ post.text }}</pre>
+      </div>
+
+      <div class="note-footer">
+        <div class="soft">
+          Если стало хоть чуть легче, значит ты всё сделал правильно.
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="{% url 'blog:create_note' %}">
+        Создать ещё
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
+
+      <a class="btn btn-ghost" href="{% url 'blog:user_note' %}">
+        Посмотреть мои записи
+      </a>
+
+      <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">
+        Посмотреть все записи
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/just_created_note.js' %}"></script>
+{% endblock %}

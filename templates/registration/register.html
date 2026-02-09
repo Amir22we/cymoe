@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Регистрация — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-head">
+        <h1 class="auth-title">Регистрация</h1>
+        <p class="auth-subtitle">Создай аккаунт, чтобы иметь доступ к своим записям.</p>
+      </div>
+
+      <div class="warning" role="note">
+        <span class="warning-dot" aria-hidden="true"></span>
+        <div class="warning-text">
+          Не используй своё настоящее имя/фамилию. CYMOE про анонимность, не про “палить себя”.
+        </div>
+      </div>
+
+      <form class="auth-form" method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="form-errors" role="alert">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <div class="field">
+          <label class="label" for="{{ form.username.id_for_label }}">Юзернейм</label>
+          <div class="control">
+            {{ form.username }}
+          </div>
+          {% if form.username.errors %}
+            <div class="error" role="alert">{{ form.username.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="{{ form.password.id_for_label }}">Пароль</label>
+          <div class="control control-pass">
+            {{ form.password }}
+            <button class="eye" type="button" data-toggle="pass1" aria-label="Показать пароль">👁</button>
+          </div>
+          {% if form.password1.errors %}
+            <div class="error" role="alert">{{ form.password.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="{{ form.password2.id_for_label }}">Повтори пароль</label>
+          <div class="control control-pass">
+            {{ form.password2 }}
+            <button class="eye" type="button" data-toggle="pass2" aria-label="Показать пароль">👁</button>
+          </div>
+          {% if form.password2.errors %}
+            <div class="error" role="alert">{{ form.password2.errors }}</div>
+          {% endif %}
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+          Зарегистрироваться
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+
+        <div class="auth-foot">
+          Уже есть аккаунт?
+          <a class="link" href="{% url 'blog:login_user' %}">Войти</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="auth-side" aria-hidden="true">
+      <div class="side-card">
+        <div class="side-title">Анонимность</div>
+        <div class="side-text">
+          Регистрация нужна только чтобы ты мог(ла) видеть свои записи.
+          Никаких “настоящих данных” не требуется.
+        </div>
+        <div class="side-pill">CYMOE • Clean Your Mouse Of Emotions</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/register.js' %}"></script>
+{% endblock %}

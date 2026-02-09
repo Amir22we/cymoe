@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }} — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/detail_post.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="detail">
+  <div class="wrap">
+
+    <div class="card head-card">
+      <div class="head-top">
+        <a class="back-btn" href="{% url 'blog:view_note' %}">
+          ← Назад
+        </a>
+
+        <div class="right-top">
+            <span class="badge badge-pub">Опубликовано</span>
+        </div>
+      </div>
+
+      <div class="head-main">
+        <h1 class="title">{{ post.title }}</h1>
+
+        <div class="meta">
+          <span class="meta-item">
+            <span class="meta-label">Автор:</span>
+            <span class="meta-value">{{ post.author }}</span>
+          </span>
+          <span class="dot" aria-hidden="true">•</span>
+          <span class="meta-item">
+            <span class="meta-label">Дата:</span>
+            <span class="meta-value">{{ post.publish|date:"d.m.Y H:i" }}</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="tool" type="button" id="copyAllBtn" aria-label="Скопировать всю запись">
+          Копировать всё
+        </button>
+        <button class="tool" type="button" id="copyTextBtn" aria-label="Скопировать только текст">
+          Копировать текст
+        </button>
+        <button class="tool tool--ghost" type="button" id="selectBtn" aria-label="Выделить текст">
+          Выделить
+        </button>
+
+        <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </div>
+
+    <div class="card body-card">
+      <div class="paper">
+        <pre class="content" id="noteText">{{ post.text }}</pre>
+      </div>
+    </div>
+
+    <div class="bottom-actions">
+      <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">
+        ← К записям
+      </a>
+
+      <a class="btn btn-primary" href="{% url 'blog:create_note' %}">
+        Создать новую
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/detail_post.js' %}"></script>
+{% endblock %}

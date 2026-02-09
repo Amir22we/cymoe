@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Все записи — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/user_note.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="my-notes">
+  <div class="head">
+    <div class="head-left">
+      <h1 class="title">Все записи</h1>
+      <p class="subtitle">
+        Здесь собраны опубликованные записи всех пользователей. Черновики сюда не попадают.
+      </p>
+    </div>
+
+    <div class="head-right">
+      <a class="btn btn-primary" href="{% url 'blog:create_note' %}">
+        Создать запись
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
+      <a class="btn btn-ghost" href="{% url 'blog:user_note' %}">Мои записи</a>
+    </div>
+  </div>
+
+  {% if posts %}
+    <div class="grid">
+      {% for post in posts %}
+        <article class="card">
+          <div class="card-top">
+            <div class="badges">
+              <span class="badge badge-pub">Опубликовано</span>
+            </div>
+
+            <div class="date">
+              {% if post.publish %}{{ post.publish|date:"d.m.Y H:i" }}{% endif %}
+            </div>
+          </div>
+
+          <h2 class="card-title">{{ post.title }}</h2>
+
+          <div class="preview" data-collapsible="1">
+            {{ post.text|truncatechars:260 }}
+          </div>
+
+          <div class="card-actions">
+            <a class="link-btn" href="{% url 'blog:detail_post_all' post.id %}">
+              Открыть
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty card">
+      <div class="empty-title">Пока пусто</div>
+      <div class="empty-text">
+        Публичных записей пока нет. Можешь начать первым. Мир, как обычно, тянет до последнего.
+      </div>
+      <a class="btn btn-primary" href="{% url 'blog:create_note' %}">
+        Создать первую запись
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/user_note.js' %}"></script>
+{% endblock %}

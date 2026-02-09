@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Создать запись — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create_note.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="compose">
+  <div class="compose-grid">
+    <div class="card compose-card">
+      <div class="card-head">
+        <h1 class="card-title">Создать запись</h1>
+        <p class="card-subtitle">
+          Здесь можно писать буквально всё, что угодно. Без пафоса, без оправданий, без “а вдруг кто-то осудит”.
+        </p>
+      </div>
+
+      <form class="form" method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="form-errors" role="alert">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <div class="field">
+          <label class="label" for="{{ form.title.id_for_label }}">Заголовок</label>
+          <div class="control">
+            {{ form.title }}
+          </div>
+          {% if form.title.errors %}
+            <div class="error" role="alert">{{ form.title.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="{{ form.text.id_for_label }}">Текст</label>
+          <div class="control">
+            {{ form.text }}
+            <div class="helper-row">
+              <div class="helper" id="helperText">
+                Пиши как есть. Никто не ставит оценки. Главное, чтобы стало легче.
+              </div>
+              <div class="counter" id="counter">0</div>
+            </div>
+          </div>
+          {% if form.text.errors %}
+            <div class="error" role="alert">{{ form.text.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit" name="action" value="publish">
+            Опубликовать
+            <span class="btn-glow" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div class="note" role="note">
+          <span class="note-dot" aria-hidden="true"></span>
+        </div>
+      </form>
+    </div>
+
+    <aside class="side">
+      <div class="side-card">
+        <div class="side-title">Подсказка</div>
+        <div class="side-text">
+          Начни с одной фразы. Например:
+          <div class="quotes">
+            <div class="quote">“Сегодня меня задело…”</div>
+            <div class="quote">“Я устал от…”</div>
+            <div class="quote">“Мне хочется…”</div>
+          </div>
+        </div>
+        <div class="side-pill">CYMOE • Clean Your Mouse Of Emotions</div>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/create_note.js' %}"></script>
+{% endblock %}

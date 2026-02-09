@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Удалить аккаунт — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/delete_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="delete">
+  <div class="wrap">
+
+    <div class="card danger-card">
+      <div class="head">
+        <div class="badge">
+          <span class="badge-ico" aria-hidden="true">⚠</span>
+          Опасная зона
+        </div>
+
+        <h1 class="title">Удаление аккаунта</h1>
+        <p class="subtitle">
+          Будут удалены все ваши записи и все ваши эмоции, которые вы здесь оставили.
+          Не “скроются”. Не “уйдут в архив”. Именно удалятся.
+        </p>
+      </div>
+
+      <div class="warning" role="note">
+        <span class="warning-dot" aria-hidden="true"></span>
+        <div class="warning-text">
+          Если вы нажмёте <b>Удалить</b>, обратно уже не откатить.
+          Если сомневаетесь хоть на 1%, лучше нажмите “Отмена”.
+        </div>
+      </div>
+
+      <form class="form" method="post">
+        {% csrf_token %}
+
+        <button class="btn btn-danger" type="submit">
+          Удалить аккаунт
+          <span class="danger-glow" aria-hidden="true"></span>
+        </button>
+
+        <div class="safe-actions">
+          <a class="btn btn-ghost" href="{% url 'blog:profile' %}">Отмена</a>
+          <a class="btn btn-ghost btn-back" href="javascript:history.back()">← Назад</a>
+        </div>
+      </form>
+
+      <div class="small">
+        CYMOE уважает твой выбор. Но мир уже и так любит удалять важные вещи без спроса.
+      </div>
+    </div>
+
+    <div class="card side-card" aria-hidden="true">
+      <div class="side-title">Последний шанс</div>
+      <div class="side-text">
+        Если тебе просто нужно “почистить голову”, возможно достаточно удалить отдельные записи
+        или оставить аккаунт пустым.
+      </div>
+      <div class="side-pill">CYMOE • Clean Your Mouse Of Emotions</div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/delete_profile.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Изменить пароль — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/change_pass.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="change-pass">
+  <div class="wrap">
+
+    <div class="card main-card">
+      <div class="card-head">
+        <h1 class="title">Изменить пароль</h1>
+        <p class="subtitle">
+          Сначала введи текущий пароль, потом новый. Не делай “123456”, это не смешно.
+        </p>
+      </div>
+
+      <form class="form" method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="form-errors" role="alert">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <div class="field">
+          <label class="label" for="{{ form.old_password.id_for_label }}">Текущий пароль</label>
+          <div class="control control-pass">
+            {{ form.old_password }}
+            <button class="eye" type="button" data-toggle="old" aria-label="Показать текущий пароль">👁</button>
+          </div>
+          {% if form.old_password.errors %}
+            <div class="error" role="alert">{{ form.old_password.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="{{ form.new_password1.id_for_label }}">Новый пароль</label>
+          <div class="control control-pass">
+            {{ form.new_password1 }}
+            <button class="eye" type="button" data-toggle="new1" aria-label="Показать новый пароль">👁</button>
+          </div>
+          {% if form.new_password1.errors %}
+            <div class="error" role="alert">{{ form.new_password1.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="{{ form.new_password2.id_for_label }}">Повтори новый пароль</label>
+          <div class="control control-pass">
+            {{ form.new_password2 }}
+            <button class="eye" type="button" data-toggle="new2" aria-label="Показать повтор нового пароля">👁</button>
+          </div>
+          {% if form.new_password2.errors %}
+            <div class="error" role="alert">{{ form.new_password2.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">
+            Сохранить
+            <span class="btn-glow" aria-hidden="true"></span>
+          </button>
+
+          <a class="btn btn-ghost" href="{% url 'blog:profile' %}">
+            Отмена
+          </a>
+
+          <a class="btn btn-ghost btn-back" href="javascript:history.back()">
+            ← Назад
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <div class="card side-card" aria-hidden="true">
+      <div class="side-title">Подсказка</div>
+      <div class="side-text">
+        Используй пароль, который ты не угадаешь по настроению.  
+        Лучше длинный и странный, чем короткий и “удобный”.
+      </div>
+      <div class="side-pill">CYMOE • Clean Your Mouse Of Emotions</div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/change_pass.js' %}"></script>
+{% endblock %}
