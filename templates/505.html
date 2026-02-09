@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}505 — HTTP Version Not Supported | CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/505.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="e505">
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="pill">
+          <span class="dot" aria-hidden="true"></span>
+          Ошибка 505
+        </div>
+        <div class="code">505</div>
+      </div>
+
+      <h1 class="title">HTTP-версия не поддерживается</h1>
+      <p class="subtitle">
+        Похоже, запрос пришёл с HTTP-версией, которую сервер (или прокси) не принимает.
+        Обычно это бывает из-за странного клиента, устаревшего прокси или кривой конфигурации.
+      </p>
+
+      <div class="hint" role="note">
+        <span class="hint-dot" aria-hidden="true"></span>
+        <div class="hint-text">
+          Что можно сделать: обновить страницу, попробовать другой браузер/сеть,
+          или просто вернуться назад. Если это повторяется, проблема где-то на сервере.
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="{% url 'blog:index' %}">
+          На главную
+          <span class="btn-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="btn btn-ghost" href="javascript:history.back()">
+          ← Назад
+        </a>
+
+        <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">
+          Все записи
+        </a>
+      </div>
+    </div>
+
+    <div class="side" aria-hidden="true">
+      <div class="side-card">
+        <div class="side-title">CYMOE</div>
+        <div class="side-text">
+          Clean Your Mouse Of Emotions.  
+          Даже HTTP-версии иногда не могут договориться между собой.
+        </div>
+        <div class="side-pill">505 • протокол обиделся</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/505.js' %}"></script>
+{% endblock %}

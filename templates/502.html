@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}502 — Ошибка шлюза | CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/502.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="e502">
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="pill">
+          <span class="dot" aria-hidden="true"></span>
+          Ошибка 502
+        </div>
+        <div class="code">502</div>
+      </div>
+
+      <h1 class="title">Сервер не отвечает</h1>
+      <p class="subtitle">
+        Похоже, сайт сейчас не может достучаться до приложения.
+        Обычно это временно: прокси жив, а бэкенд где-то “перезагружается” или завис.
+      </p>
+
+      <div class="hint" role="note">
+        <span class="hint-dot" aria-hidden="true"></span>
+        <div class="hint-text">
+          Попробуй обновить страницу чуть позже.  
+          Если ты видишь это часто, значит где-то в деплое или портах снова начался спектакль.
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="{% url 'blog:index' %}">
+          На главную
+          <span class="btn-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="btn btn-ghost" href="javascript:history.back()">
+          ← Назад
+        </a>
+
+        <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">
+          Все записи
+        </a>
+      </div>
+    </div>
+
+    <div class="side" aria-hidden="true">
+      <div class="side-card">
+        <div class="side-title">CYMOE</div>
+        <div class="side-text">
+          Clean Your Mouse Of Emotions.  
+          Сейчас у сервера тоже “эмоции”: он не смог связаться сам с собой.
+        </div>
+        <div class="side-pill">Bad Gateway • бывает</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/502.js' %}"></script>
+{% endblock %}

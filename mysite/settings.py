@@ -10,45 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-import os
 from pathlib import Path
-
-from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(BASE_DIR / ".env")
-
-
-def _env_bool(name: str, default: bool = False) -> bool:
-    value = os.getenv(name)
-    if value is None:
-        return default
-    return value.strip().lower() in {"1", "true", "yes", "y", "on"}
-
-
-def _env_list(name: str, default: list[str]) -> list[str]:
-    value = os.getenv(name)
-    if value is None:
-        return default
-    items = [part.strip() for part in value.split(",")]
-    return [part for part in items if part]
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(
-    "DJANGO_SECRET_KEY",
-    'django-insecure-y6kp(m_zgp(q0zcj31575v_wn#z1@95frotd@!wg!1)d_lig1n',
-)
+SECRET_KEY = 'django-insecure-y6kp(m_zgp(q0zcj31575v_wn#z1@95frotd@!wg!1)d_lig1n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = _env_bool("DJANGO_DEBUG", default=False)
+DEBUG = False
 
-ALLOWED_HOSTS = _env_list("DJANGO_ALLOWED_HOSTS", default=["*"])
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -64,6 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -140,3 +115,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"

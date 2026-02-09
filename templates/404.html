@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}404 — Страница не найдена | CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/404.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="e404">
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="pill">
+          <span class="dot" aria-hidden="true"></span>
+          Ошибка 404
+        </div>
+        <div class="code">404</div>
+      </div>
+
+      <h1 class="title">Страница не найдена</h1>
+      <p class="subtitle">
+        Ты пришёл(ла) туда, где ничего нет. Впрочем, иногда это даже полезно.
+        Но если ты искал(а) что-то конкретное, давай вернёмся в реальность.
+      </p>
+
+      <div class="hint" role="note">
+        <span class="hint-dot" aria-hidden="true"></span>
+        <div class="hint-text">
+          Проверь ссылку. Если ты попал(а) сюда после клика в интерфейсе,
+          значит где-то в коде живёт маленький баг и смеётся.
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="{% url 'blog:index' %}">
+          На главную
+          <span class="btn-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="btn btn-ghost" href="javascript:history.back()">
+          ← Назад
+        </a>
+
+        <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">
+          Все записи
+        </a>
+      </div>
+    </div>
+
+    <div class="side" aria-hidden="true">
+      <div class="side-card">
+        <div class="side-title">CYMOE</div>
+        <div class="side-text">
+          Clean Your Mouse Of Emotions.  
+          Даже если страница не нашлась, эмоции всё ещё при тебе.
+        </div>
+        <div class="side-pill">Тишина тоже контент</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/404.js' %}"></script>
+{% endblock %}
