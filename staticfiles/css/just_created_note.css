@@ -1,0 +1,272 @@
+.created{
+  padding: 26px 0 44px;
+}
+
+.wrap{
+  display: grid;
+  gap: 14px;
+}
+
+/* card base */
+.card{
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  overflow: hidden;
+  position: relative;
+}
+
+.card::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background: radial-gradient(60% 50% at 15% 20%, rgba(120,120,255,0.14), transparent 60%);
+  opacity: .65;
+  pointer-events:none;
+}
+
+.head-card{
+  padding: 18px;
+}
+
+.head-row{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.82);
+}
+
+.badge-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(160,160,255,0.95), rgba(110,255,210,0.85));
+  box-shadow: 0 0 0 4px rgba(160,160,255,0.10);
+}
+
+.badge-draft{
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.72);
+}
+
+.badge-pub{
+  border-color: rgba(110,255,210,0.22);
+  background: rgba(110,255,210,0.07);
+  color: rgba(210,255,240,0.92);
+}
+
+.title{
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 0.3px;
+  color: rgba(255,255,255,0.95);
+  line-height: 1.15;
+}
+
+.meta{
+  position: relative;
+  z-index: 1;
+  margin-top: 10px;
+  color: rgba(255,255,255,0.66);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.meta-label{
+  color: rgba(255,255,255,0.52);
+  margin-right: 6px;
+}
+
+.meta-dot{
+  color: rgba(255,255,255,0.35);
+}
+
+/* Note card */
+.note-card{
+  padding: 0;
+}
+
+.note-top{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.note-title{
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  color: rgba(255,255,255,0.90);
+}
+
+.note-tools{
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tool{
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.78);
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease;
+}
+
+.tool:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.note-body{
+  position: relative;
+  z-index: 1;
+  padding: 18px;
+}
+
+.note-text{
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.82);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13.5px;
+
+  max-height: 260px;      /* collapsed */
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+.note-text.is-open{
+  max-height: none;
+  overflow: visible;
+  mask-image: none;
+}
+
+.note-footer{
+  position: relative;
+  z-index: 1;
+  padding: 0 18px 16px;
+}
+
+.soft{
+  color: rgba(255,255,255,0.58);
+  font-size: 13px;
+  line-height: 1.5;
+  border-left: 2px solid rgba(160,160,255,0.35);
+  padding-left: 10px;
+}
+
+/* Actions */
+.actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.btn{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+  user-select: none;
+}
+
+.btn-primary{
+  color: rgba(10, 12, 16, 0.95);
+  background: linear-gradient(135deg, rgba(160,160,255,0.95), rgba(110,255,210,0.85));
+  box-shadow: 0 16px 36px rgba(110,255,210,0.12);
+  overflow: hidden;
+}
+
+.btn-primary:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 20px 46px rgba(110,255,210,0.18);
+}
+
+.btn-ghost{
+  color: rgba(255,255,255,0.86);
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.btn-ghost:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.16);
+}
+
+.btn-glow{
+  position: absolute;
+  inset: -2px;
+  background: radial-gradient(40% 60% at 20% 30%, rgba(255,255,255,0.35), transparent 55%);
+  opacity: 0;
+  transition: opacity .22s ease;
+  pointer-events: none;
+}
+
+.btn-primary:hover .btn-glow{ opacity: 1; }
+
+/* Entrance animation */
+.head-card, .note-card, .actions{
+  opacity: 0;
+  transform: translateY(10px);
+  animation: rise .55s ease forwards;
+}
+.note-card{ animation-delay: .06s; }
+.actions{ animation-delay: .12s; }
+
+@keyframes rise{
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 520px){
+  .title{ font-size: 26px; }
+  .note-body{ padding: 14px; }
+  .note-top{ padding: 12px 14px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .head-card, .note-card, .actions, .btn, .tool{
+    transition: none !important;
+    animation: none !important;
+  }
+}
