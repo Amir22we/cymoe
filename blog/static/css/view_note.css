@@ -1,0 +1,118 @@
+/* Pagination (view_note)
+   Только стили. Django-ссылки/логика — в шаблоне.
+*/
+
+.paginator{
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+}
+
+.paginator-pages{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.paginator-ellipsis{
+  color: rgba(255,255,255,0.55);
+  padding: 0 4px;
+  user-select: none;
+}
+
+.paginator-page{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 12px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.86);
+
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.paginator-page:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.paginator-page.is-active{
+  color: rgba(10, 12, 16, 0.95);
+  background: linear-gradient(135deg, rgba(160,160,255,0.95), rgba(110,255,210,0.85));
+  border-color: rgba(110,255,210,0.22);
+  box-shadow: 0 16px 36px rgba(110,255,210,0.12);
+}
+
+.paginator-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 14px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.80);
+
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.paginator-btn:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.paginator-btn[aria-disabled="true"]{
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.paginator-arrow{
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.paginator-label{
+  font-size: 13px;
+}
+
+@media (max-width: 620px){
+  .paginator{
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .paginator-label{ display: none; }
+
+  .paginator-btn{
+    width: 42px;
+    padding: 0;
+  }
+}

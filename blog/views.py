@@ -4,7 +4,8 @@ from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName
 from .models import Post
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
-
+from django.utils.text import slugify
+from django.core.paginator import Paginator
 # Главная страница
 def index(request):
     return render(request, 'index/index.html')
@@ -61,8 +62,8 @@ def create_note(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user 
-            
-            form.save()
+            post.slug = slugify(post.title)
+            post.save()
             return redirect('blog:just_created_note')
     else:
         form = PostForm()
@@ -76,6 +77,9 @@ def user_note(request):
 # Просмотр всех записей
 def view_note(request):
     posts = Post.objects.all()
+    # paginator = Paginator(posts, 3)
+    # page_number = request.GET.get('page', 1)
+    # posts = paginator.page(page_number)
     return render(request, 'notes/view_note.html', {'posts': posts})
 
 # Только что созданная запись (redirect с create_note)
@@ -89,8 +93,8 @@ def detail_note(request, id):
     return render(request, 'notes/detail_post.html', {'post': post})
 
 # Просмотр всех постов
-def detail_note_all(request, id):
-    post = get_object_or_404(Post, id=id)
+def detail_note_all(request, id, slug, year, month, day):
+    post = get_object_or_404(Post, id=id, slug=slug, publish__year=year, publish__month=month, publish__day=day)
     return render(request, 'notes/detail_post_all.html', {'post': post})
 
 # Изменить имя

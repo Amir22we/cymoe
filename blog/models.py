@@ -7,7 +7,7 @@ from django.urls import reverse
 class Post(models.Model):
 
     title = models.CharField(max_length=100, unique=False)
-    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
+    slug = models.SlugField(max_length=100, unique_for_date='publish')
     text = models.TextField(max_length=10000)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -22,19 +22,21 @@ class Post(models.Model):
             models.Index(fields=['-publish']),
         ]
         get_latest_by = 'created'
+
     # Для тестов через shell
     def __str__(self):
         return self.title
     
-    # Автогенерация slug
     def save(self, *args, **kwargs):
         if not self.slug:
-            base = slugify(self.title)
-            self.slug = base
-            counter = 1
-            
-            while Post.objects.filter(slug=self.slug).exists():
-                counter += 1
-                self.slug = f"{base}-{counter}"
+            self.slug = slugify(self.title, allow_unicode=True)
         super().save(*args, **kwargs)
-
+        
+    def get_absolute_url(self):
+        return reverse("blog:detail_post_all", kwargs={"id": self.id,
+                                                       "year": self.publish.year,
+                                                       "month": self.publish.month,
+                                                       "day": self.publish.day,
+                                                       "slug": self.slug
+                                                       })
+    

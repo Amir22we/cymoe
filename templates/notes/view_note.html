@@ -47,7 +47,7 @@
           </div>
 
           <div class="card-actions">
-            <a class="link-btn" href="{% url 'blog:detail_post_all' post.id %}">
+            <a class="link-btn" href="{{ post.get_absolute_url}}">
               Открыть
             </a>
           </div>
