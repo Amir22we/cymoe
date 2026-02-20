@@ -5,7 +5,7 @@ from .models import Post
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.text import slugify
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Главная страница
 def index(request):
     return render(request, 'index/index.html')
@@ -77,9 +77,14 @@ def user_note(request):
 # Просмотр всех записей
 def view_note(request):
     posts = Post.objects.all()
-    # paginator = Paginator(posts, 3)
-    # page_number = request.GET.get('page', 1)
-    # posts = paginator.page(page_number)
+    paginator = Paginator(posts, 6)
+    page_number = request.GET.get('page', 1)
+    try:
+        posts = paginator.page(page_number)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
     return render(request, 'notes/view_note.html', {'posts': posts})
 
 # Только что созданная запись (redirect с create_note)

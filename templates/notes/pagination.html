@@ -1,0 +1,43 @@
+<div class="paginator-wrap">
+    <nav class="paginator" aria-label="Навигация по страницам">
+        {% if page.has_previous %}
+            <a class="paginator-btn" href="?page={{ page.previous_page_number }}" rel="prev" aria-label="Предыдущая страница">
+                <span class="paginator-arrow" aria-hidden="true">←</span>
+                <span class="paginator-label">Назад</span>
+            </a>
+        {% else %}
+            <span class="paginator-btn" aria-disabled="true">
+                <span class="paginator-arrow" aria-hidden="true">←</span>
+                <span class="paginator-label">Назад</span>
+            </span>
+        {% endif %}
+
+        <div class="paginator-center">
+            <div class="paginator-pages">
+                {% for num in page.paginator.page_range %}
+                    {% if num == page.number %}
+                        <span class="paginator-page" aria-current="page">{{ num }}</span>
+                    {% else %}
+                        <a class="paginator-page" href="?page={{ num }}" aria-label="Страница {{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="paginator-meta">
+                Страница <span>{{ page.number }}</span> из <span>{{ page.paginator.num_pages }}</span>
+            </div>
+        </div>
+
+        {% if page.has_next %}
+            <a class="paginator-btn" href="?page={{ page.next_page_number }}" rel="next" aria-label="Следующая страница">
+                <span class="paginator-label">Вперёд</span>
+                <span class="paginator-arrow" aria-hidden="true">→</span>
+            </a>
+        {% else %}
+            <span class="paginator-btn" aria-disabled="true">
+                <span class="paginator-label">Вперёд</span>
+                <span class="paginator-arrow" aria-hidden="true">→</span>
+            </span>
+        {% endif %}
+    </nav>
+</div>
