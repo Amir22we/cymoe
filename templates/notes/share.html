@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Поделиться записью — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/share.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="share">
+    <div class="share-wrap">
+        <div class="card share-card">
+            {% if sent %}
+                <div class="status status-success" role="status" aria-live="polite">
+                    Письмо успешно отправлено
+                </div>
+                <h1 class="title">Готово</h1>
+                <p class="subtitle">
+                    Запись «{{ post.title|default:"Без заголовка" }}» успешно отправлена на
+                    <span class="accent">{{ form.cleaned_data.to }}</span>.
+                </p>
+
+                <div class="actions">
+                    <a class="btn btn-primary" href="{{ post.get_absolute_url }}">
+                        Вернуться к записи
+                        <span class="btn-glow" aria-hidden="true"></span>
+                    </a>
+                </div>
+            {% else %}
+                <div class="status">Отправка по e-mail</div>
+                <h1 class="title">Поделиться записью</h1>
+                <p class="subtitle">
+                    Запись: «{{ post.title|default:"Без заголовка" }}»
+                </p>
+
+                <form class="share-form" method="post" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="form-errors" role="alert">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label class="label" for="{{ form.name.id_for_label }}">Ваше имя</label>
+                            <div class="control">{{ form.name }}</div>
+                            {% if form.name.errors %}
+                                <div class="error" role="alert">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="{{ form.email.id_for_label }}">Ваш e-mail</label>
+                            <div class="control">{{ form.email }}</div>
+                            {% if form.email.errors %}
+                                <div class="error" role="alert">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="{{ form.to.id_for_label }}">E-mail получателя</label>
+                        <div class="control">{{ form.to }}</div>
+                        {% if form.to.errors %}
+                            <div class="error" role="alert">{{ form.to.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="{{ form.comments.id_for_label }}">Комментарий (необязательно)</label>
+                        <div class="control">
+                            {{ form.comments }}
+                            <div class="helper-row">
+                                <div class="helper" id="helperText">Добавьте короткий комментарий, если хотите.</div>
+                                <div class="counter" id="counter">0</div>
+                            </div>
+                        </div>
+                        {% if form.comments.errors %}
+                            <div class="error" role="alert">{{ form.comments.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" type="submit">
+                            Отправить e-mail
+                            <span class="btn-glow" aria-hidden="true"></span>
+                        </button>
+                        <a class="btn btn-ghost" href="{{ post.get_absolute_url }}">Назад к записи</a>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/share.js' %}"></script>
+{% endblock %}

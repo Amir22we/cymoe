@@ -18,5 +18,6 @@ urlpatterns = [
     path('post_all/<int:id>/<int:year>/<int:month>/<int:day>/<str:slug>/', views.detail_note_all, name='detail_post_all'),
     path('change_name/', views.change_name, name='change_name'),
     path('change_pass/', views.change_pass, name='change_pass'),
-    path('delete_profile/', views.delete_profile, name='delete_profile')
+    path('delete_profile/', views.delete_profile, name='delete_profile'),
+    path('<int:post_id>/share/', views.post_share, name='post_share')
 ]

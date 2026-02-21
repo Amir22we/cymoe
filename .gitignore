@@ -17,3 +17,8 @@ ENV/
 
 # OS
 .DS_Store
+
+# Environment variables
+.env
+.env.*
+!.env.example
