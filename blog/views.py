@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm
+from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm
 from .models import Post
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.decorators.http import require_POST
 
 # Главная страница
 def index(request):
@@ -110,7 +111,11 @@ def detail_note(request, id):
 # Просмотр всех постов
 def detail_note_all(request, id, slug, year, month, day):
     post = get_object_or_404(Post, id=id, slug=slug, publish__year=year, publish__month=month, publish__day=day)
-    return render(request, 'notes/detail_post_all.html', {'post': post})
+    
+    comments = post.comment.filter(active=True)
+    form = CommentForm()
+
+    return render(request, 'notes/detail_post_all.html', {'post': post, 'comments': comments, 'form': form})
 
 
 # Изменить имя
@@ -159,7 +164,7 @@ def post_share(request, post_id):
             subject = f"{cd['name']} рекомендует " \
                       f"{post.title}"
             message = f"Читай {post.title} в {post_url}\n\n" \
-                      f"{cd['name']}\s ({cd['email']}) Комент: {cd['comments']}"
+                      f"{cd['name']}\'s ({cd['email']}) Комент: {cd['comments']}"
             send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['to']])
 
             sent = True
@@ -168,3 +173,17 @@ def post_share(request, post_id):
         form = EmaiPostForm()
 
     return render(request, 'notes/share.html', {'post': post, 'form': form, 'sent': sent})
+
+# Коменты под постами
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comment = None
+            
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+
+    return render(request, 'notes/comment.html',{'post': post, 'form': form, 'comment': comment})

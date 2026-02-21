@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Post
+from .models import Post, Comment
 
 class RegisterUserForm(forms.ModelForm):
     username = forms.CharField(max_length=50)
@@ -50,4 +50,9 @@ class EmaiPostForm(forms.Form):
     email = forms.EmailField()
     to = forms.EmailField()
     comments = forms.CharField(required=False, widget=forms.Textarea)
+    
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['name', 'email', 'body']
     

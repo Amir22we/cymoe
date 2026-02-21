@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Комментарий — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/comment.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="comment-result">
+    <div class="comment-result-wrap">
+        {% if comment %}
+            <div class="comment-card comment-card--success">
+                <span class="status status-success">Комментарий отправлен</span>
+                <h1 class="comment-title">Спасибо, ваш комментарий уже под постом</h1>
+                <p class="comment-subtitle">
+                    Вы можете вернуться к записи и продолжить обсуждение.
+                </p>
+                <div class="comment-actions">
+                    <a class="btn btn-primary" href="{{ post.get_absolute_url }}">
+                        К записи
+                        <span class="btn-glow" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            {% include "includes/comment_form.html" %}
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/comment.js' %}"></script>
+{% endblock %}

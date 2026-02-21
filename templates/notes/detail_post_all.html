@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/detail_post.css' %}">
+<link rel="stylesheet" href="{% static 'css/comment.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -68,13 +69,36 @@
         Создать новую
         <span class="btn-glow" aria-hidden="true"></span>
       </a>
-      <p>
-        <a class="btn btn-primary" href="{% url 'blog:post_share' post.id %}">
-            Поделиться постом
-            <span class="btn-glow" aria-hidden="true"></span>
-        </a>
-    </p>
+      <a class="btn btn-primary" href="{% url 'blog:post_share' post.id %}">
+        Поделиться постом
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
     </div>
+
+    <section class="comments-feed">
+      {% with comments.count as total_comments %}
+        <div class="comments-head">
+          <h2 class="comments-title">Комментарии</h2>
+          <span class="comments-count">{{ total_comments }}</span>
+        </div>
+      {% endwith %}
+
+      <div class="comments-list">
+        {% for comment in comments %}
+          <article class="comment-item">
+            <div class="comment-item-head">
+              <span class="comment-author">{{ comment.name }}</span>
+              <span class="comment-date">{{ comment.created|date:"d.m.Y H:i" }}</span>
+            </div>
+            <div class="comment-body">{{ comment.body|linebreaks }}</div>
+          </article>
+        {% empty %}
+          <p class="comments-empty">Пока комментариев нет. Будьте первым, кто оставит мнение.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    {% include "includes/comment_form.html" %}
 
   </div>
 </section>
@@ -82,4 +106,5 @@
 
 {% block extra_js %}
 <script src="{% static 'scripts/detail_post.js' %}"></script>
+<script src="{% static 'scripts/comment.js' %}"></script>
 {% endblock %}
