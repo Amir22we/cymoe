@@ -1,7 +1,9 @@
 asgiref==3.11.1
-Django==5.1.7
+Django==6.0.2
 gunicorn==23.0.0
 packaging==26.0
 python-dotenv==1.2.1
 sqlparse==0.5.5
+unicode==2.9
+Unidecode==1.4.0
 whitenoise==6.11.0
