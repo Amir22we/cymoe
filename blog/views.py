@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm
-from .models import Post
+from .models import Post, CustomTag
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.text import slugify
@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.http import require_POST
+from taggit.models import Tag
 
 # Главная страница
 def index(request):
@@ -68,8 +69,8 @@ def create_note(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user 
-            post.slug = slugify(post.title)
             post.save()
+            form.save_m2m()
             return redirect('blog:just_created_note')
     else:
         form = PostForm()
@@ -83,8 +84,14 @@ def user_note(request):
 
 
 # Просмотр всех записей
-def view_note(request):
+def view_note(request, tag_slug=None):
     posts = Post.objects.all()
+
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(CustomTag, slug=tag_slug)
+        posts = posts.filter(tags=tag)
+
     paginator = Paginator(posts, 6)
     page_number = request.GET.get('page', 1)
     try:
@@ -93,7 +100,7 @@ def view_note(request):
         posts = paginator.page(paginator.num_pages)
     except PageNotAnInteger:
         posts = paginator.page(1)
-    return render(request, 'notes/view_note.html', {'posts': posts})
+    return render(request, 'notes/view_note.html', {'posts': posts, 'tag': tag})
 
 
 # Только что созданная запись (redirect с create_note)

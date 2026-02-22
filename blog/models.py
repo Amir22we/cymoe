@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.urls import reverse
 from unidecode import unidecode
+from taggit.managers import TaggableManager 
+from taggit.models import TagBase, GenericTaggedItemBase
+
 class Post(models.Model):
 
     title = models.CharField(max_length=100, unique=False)
@@ -40,6 +43,8 @@ class Post(models.Model):
                                                        "slug": self.slug
                                                        })
     
+    tags = TaggableManager(through="TaggedPost", blank=True)
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment')
 
@@ -57,4 +62,13 @@ class Comment(models.Model):
     def __str__(self):
         return f'Comment by {self.name} on {self.post}'
     
-    
+# Кастомный тэг
+class CustomTag(TagBase):
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(unidecode(self.name))
+        super().save(*args, **kwargs)
+
+class TaggedPost(GenericTaggedItemBase):
+    tag = models.ForeignKey(CustomTag, on_delete=models.CASCADE, related_name="tagged_posts")
+

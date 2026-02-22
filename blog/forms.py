@@ -35,7 +35,7 @@ class LoginForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'text',]
+        fields = ['title', 'text', 'tags', ]
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)

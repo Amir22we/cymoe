@@ -20,5 +20,6 @@ urlpatterns = [
     path('change_pass/', views.change_pass, name='change_pass'),
     path('delete_profile/', views.delete_profile, name='delete_profile'),
     path('<int:post_id>/share/', views.post_share, name='post_share'),
-    path('<int:post_id>/comment/', views.post_comment, name='post_comment')
+    path('<int:post_id>/comment/', views.post_comment, name='post_comment'),
+    path('tag/<slug:tag_slug>/', views.view_note, name='view_note_by_tag')
 ]
