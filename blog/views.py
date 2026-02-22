@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
+from django.db.models import Count
 
 # Главная страница
 def index(request):
@@ -30,6 +31,7 @@ def register(request):
     else:
         form = RegisterUserForm()
     return render(request, 'registration/register.html', {"form": form})
+
 
 # Выходи с аккаунта
 def logout_user(request):
@@ -59,10 +61,12 @@ def login_user(request):
 
 
 # Профиль
+@login_required
 def profile(request):
     return render(request, 'profile/profile.html')
 
 # Создание записи
+@login_required
 def create_note(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -78,12 +82,14 @@ def create_note(request):
 
 
 # Записи пользователей
+@login_required
 def user_note(request):
     posts = Post.objects.filter(author=request.user)
     return render(request, 'notes/user_note.html', {'posts': posts})
 
 
 # Просмотр всех записей
+@login_required
 def view_note(request, tag_slug=None):
     posts = Post.objects.all()
 
@@ -104,28 +110,36 @@ def view_note(request, tag_slug=None):
 
 
 # Только что созданная запись (redirect с create_note)
+@login_required
 def just_created_note(request):
     post = Post.objects.filter(author=request.user).latest()
     return render(request, 'notes/just_created_note.html', {'post': post})
 
 
 # Просмотр поста
+@login_required
 def detail_note(request, id):
     post = get_object_or_404(Post, id=id)
     return render(request, 'notes/detail_post.html', {'post': post})
 
 
 # Просмотр всех постов
+@login_required
 def detail_note_all(request, id, slug, year, month, day):
     post = get_object_or_404(Post, id=id, slug=slug, publish__year=year, publish__month=month, publish__day=day)
     
     comments = post.comment.filter(active=True)
     form = CommentForm()
 
-    return render(request, 'notes/detail_post_all.html', {'post': post, 'comments': comments, 'form': form})
+    post_tags_ids = post.tags.values_list('id',flat=True)
+    similar_posts = Post.objects.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
+
+    return render(request, 'notes/detail_post_all.html', {'post': post, 'comments': comments, 'form': form, 'similar_posts': similar_posts})
 
 
 # Изменить имя
+@login_required
 def change_name(request):
     if request.method == "POST":
         form = ChangeName(request.POST)
@@ -139,6 +153,7 @@ def change_name(request):
 
 
 # Изменить пароль
+@login_required
 def change_pass(request):
     if request.method == "POST":
         form = PasswordChangeForm(request.user, request.POST)
@@ -152,6 +167,7 @@ def change_pass(request):
 
 
 # Удаление акканта
+@login_required
 def delete_profile(request):
     if request.method == "POST":
         user = request.user
@@ -160,6 +176,7 @@ def delete_profile(request):
     return render(request, 'profile/delete_profile.html')
 
 # Отправка постов
+@login_required
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     sent = False
@@ -182,6 +199,7 @@ def post_share(request, post_id):
     return render(request, 'notes/share.html', {'post': post, 'form': form, 'sent': sent})
 
 # Коменты под постами
+@login_required
 @require_POST
 def post_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)

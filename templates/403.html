@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}403 — Доступ запрещён | CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/404.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="e404">
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="pill">
+          <span class="dot" aria-hidden="true"></span>
+          Ошибка 403
+        </div>
+        <div class="code">403</div>
+      </div>
+
+      <h1 class="title">Нет прав доступа</h1>
+      <p class="subtitle">
+        Сервер понял запрос, но не разрешает открыть эту страницу.
+      </p>
+
+      <div class="hint" role="note">
+        <span class="hint-dot" aria-hidden="true"></span>
+        <div class="hint-text">
+          Проверь, под тем ли аккаунтом ты вошёл(ла). Для этой страницы могут требоваться дополнительные права.
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="{% url 'blog:index' %}">
+          На главную
+          <span class="btn-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="btn btn-ghost" href="javascript:history.back()">
+          ← Назад
+        </a>
+
+        <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">
+          Все записи
+        </a>
+      </div>
+    </div>
+
+    <div class="side" aria-hidden="true">
+      <div class="side-card">
+        <div class="side-title">CYMOE</div>
+        <div class="side-text">
+          Clean Your Mouse Of Emotions.
+          Иногда дверь есть, но ключа пока нет.
+        </div>
+        <div class="side-pill">403 • forbidden</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/500.js' %}"></script>
+{% endblock %}

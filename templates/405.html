@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}405 — Метод не поддерживается | CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/404.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="e404">
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="pill">
+          <span class="dot" aria-hidden="true"></span>
+          Ошибка 405
+        </div>
+        <div class="code">405</div>
+      </div>
+
+      <h1 class="title">Метод запроса не разрешён</h1>
+      <p class="subtitle">
+        Для этого URL выбран неподходящий HTTP-метод (например, POST вместо GET).
+      </p>
+
+      <div class="hint" role="note">
+        <span class="hint-dot" aria-hidden="true"></span>
+        <div class="hint-text">
+          Вернись на предыдущую страницу и повтори действие корректно. Если ошибка повторяется, это проблема логики запроса.
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="{% url 'blog:index' %}">
+          На главную
+          <span class="btn-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="btn btn-ghost" href="javascript:history.back()">
+          ← Назад
+        </a>
+
+        <a class="btn btn-ghost" href="{% url 'blog:view_note' %}">
+          Все записи
+        </a>
+      </div>
+    </div>
+
+    <div class="side" aria-hidden="true">
+      <div class="side-card">
+        <div class="side-title">CYMOE</div>
+        <div class="side-text">
+          Clean Your Mouse Of Emotions.
+          Сервер принял адрес, но не принял способ обращения.
+        </div>
+        <div class="side-pill">405 • method not allowed</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/500.js' %}"></script>
+{% endblock %}

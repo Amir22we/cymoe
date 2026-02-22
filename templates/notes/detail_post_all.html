@@ -6,6 +6,7 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/detail_post.css' %}">
 <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+<link rel="stylesheet" href="{% static 'css/similar_posts.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -95,6 +96,19 @@
           </article>
         {% empty %}
           <p class="comments-empty">Пока комментариев нет. Будьте первым, кто оставит мнение.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="similar-posts">
+      <h2 class="similar-posts-title">Похожие записи</h2>
+      <div class="similar-posts-list">
+        {% for similar_post in similar_posts %}
+          <p class="similar-post-item">
+            <a class="similar-post-link" href="{{ similar_post.get_absolute_url }}">{{ similar_post.title }}</a>
+          </p>
+        {% empty %}
+          <p class="similar-posts-empty">Похожих записей пока нет.</p>
         {% endfor %}
       </div>
     </section>
