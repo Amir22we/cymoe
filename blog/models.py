@@ -42,6 +42,15 @@ class Post(models.Model):
                                                        "day": self.publish.day,
                                                        "slug": self.slug
                                                        })
+    def get_absolute_url(self):
+        return reverse("blog:detail_note", kwargs={"id": self.id,
+                                                       "year": self.publish.year,
+                                                       "month": self.publish.month,
+                                                       "day": self.publish.day,
+                                                       "slug": self.slug
+                                                       })
+
+
     
     tags = TaggableManager(through="TaggedPost", blank=True)
 
@@ -72,3 +81,19 @@ class CustomTag(TagBase):
 class TaggedPost(GenericTaggedItemBase):
     tag = models.ForeignKey(CustomTag, on_delete=models.CASCADE, related_name="tagged_posts")
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=200, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = self.user.username or str(self.user_id)
+            self.slug = slugify(base)
+        super().save(*args, **kwargs)
+
+        
+    def get_absolute_url(self):
+        return reverse("blog:profile", kwargs={"id": self.id,
+                                                       "slug": self.slug,
+                                                       })
+    

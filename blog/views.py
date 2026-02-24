@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm
-from .models import Post, CustomTag
+from .models import Post, CustomTag, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.text import slugify
@@ -63,7 +63,7 @@ def login_user(request):
 # Профиль
 @login_required
 def profile(request):
-    return render(request, 'profile/profile.html')
+    return render(request, "profile/profile.html")
 
 # Создание записи
 @login_required
@@ -118,8 +118,8 @@ def just_created_note(request):
 
 # Просмотр поста
 @login_required
-def detail_note(request, id):
-    post = get_object_or_404(Post, id=id)
+def detail_note(request, id, slug, year, month, day):
+    post = get_object_or_404(Post, id=id, slug=slug, publish__year=year, publish__month=month, publish__day=day)
     return render(request, 'notes/detail_post.html', {'post': post})
 
 

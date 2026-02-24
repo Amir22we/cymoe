@@ -237,6 +237,76 @@ body{
   margin-bottom: 12px;
 }
 
+.footer-description,
+.footer-stats{
+  margin: 0;
+}
+
+.footer-description{
+  margin-bottom: 8px;
+}
+
+.footer-stats{
+  margin-bottom: 14px;
+  color: rgba(255,255,255,0.78);
+}
+
+.footer-stats-value{
+  color: var(--text);
+  font-weight: 700;
+}
+
+.footer-list-title{
+  margin: 16px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  color: rgba(255,255,255,0.82);
+}
+
+.footer-posts-list{
+  margin: 0;
+  padding: 10px 12px;
+  list-style: none;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.02);
+  display: grid;
+  gap: 8px;
+}
+
+.footer-posts-list--latest{
+  margin-bottom: 12px;
+}
+
+.footer-posts-list li{
+  position: relative;
+  padding-left: 14px;
+}
+
+.footer-posts-list li::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  opacity: .95;
+}
+
+.footer-posts-list a{
+  color: rgba(255,255,255,0.84);
+  border-bottom: 1px solid transparent;
+  transition: color .2s ease, border-color .2s ease;
+}
+
+.footer-posts-list a:hover{
+  color: #fff;
+  border-color: rgba(255,255,255,0.35);
+}
+
 .footer-rights{
   color: rgba(255,255,255,0.55);
   font-size: 14px;

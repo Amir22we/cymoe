@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load blog_tags %}
 {% block title %}{{ post.title }} — CYMOE{% endblock %}
 
 {% block extra_css %}
@@ -21,6 +21,9 @@
 
         <div class="right-top">
             <span class="badge badge-pub">Опубликовано</span>
+            </p>
+              {{ post.body|markdown }}
+            <p>
         </div>
       </div>
 
@@ -57,7 +60,9 @@
 
     <div class="card body-card">
       <div class="paper">
-        <pre class="content" id="noteText">{{ post.text }}</pre>
+        <div class="content" id="noteText">
+          {{ post.text|markdown }}
+        </div>
       </div>
     </div>
 

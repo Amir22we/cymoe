@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load blog_tags %}
 {% block title %}Готово — CYMOE{% endblock %}
 
 {% block extra_css %}
@@ -48,7 +48,7 @@
       </div>
 
       <div class="note-body" id="noteBody">
-        <pre class="note-text" id="noteText">{{ post.text }}</pre>
+        <pre class="note-text" id="noteText">{{ post.text|markdown }}</pre>
       </div>
 
       <div class="note-footer">

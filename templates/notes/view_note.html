@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load blog_tags %}
 {% block title %}Все записи — CYMOE{% endblock %}
 
 {% block extra_css %}
@@ -56,7 +56,7 @@
           <h2 class="card-title">{{ post.title }}</h2>
 
           <div class="preview" data-collapsible="1">
-            {{ post.text|truncatechars:260 }}
+            {{ post.text|markdown|truncatechars:260 }}
           </div>
 
           <div class="card-actions">
