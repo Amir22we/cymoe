@@ -62,8 +62,9 @@ def login_user(request):
 
 # Профиль
 @login_required
-def profile(request):
-    return render(request, "profile/profile.html")
+def profile(request, username):
+    profile = get_object_or_404(User, username=username)
+    return render(request, "profile/profile.html", {'profile': profile})
 
 # Создание записи
 @login_required
@@ -210,5 +211,6 @@ def post_comment(request, post_id):
         comment = form.save(commit=False)
         comment.post = post
         comment.save()
+        return redirect(post.get_absolute_url())
 
     return render(request, 'notes/comment.html',{'post': post, 'form': form, 'comment': comment})

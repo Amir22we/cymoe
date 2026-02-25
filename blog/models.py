@@ -42,7 +42,7 @@ class Post(models.Model):
                                                        "day": self.publish.day,
                                                        "slug": self.slug
                                                        })
-    def get_absolute_url(self):
+    def get_personal_url(self):
         return reverse("blog:detail_note", kwargs={"id": self.id,
                                                        "year": self.publish.year,
                                                        "month": self.publish.month,
