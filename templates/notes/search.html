@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog_tags %}
+
+{% block title %}Поиск записей — CYMOE{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="search-page">
+    <div class="search-wrap">
+        {% if query %}
+            <div class="head">
+                <span class="status">Результаты поиска</span>
+                <h1 class="title">По запросу “{{ query }}”</h1>
+                <p class="subtitle">
+                    {% with results.count as total_results %}
+                        Найдено {{ total_results }} результат{{ total_results|pluralize:"ов,,а" }}
+                    {% endwith %}
+                </p>
+            </div>
+
+            {% if results %}
+                <div class="results-grid">
+                    {% for post in results %}
+                        <article class="card result-card">
+                            <h2 class="card-title">
+                                <a class="card-link" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                            </h2>
+                            <div class="preview" data-preview="1">
+                                {{ post.text|markdown|truncatewords_html:20 }}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty card">
+                    <div class="empty-title">Ничего не найдено</div>
+                    <div class="empty-text">
+                        Попробуй другой запрос или используй более короткую формулировку.
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="actions">
+                <a class="btn btn-ghost" href="{% url 'blog:post_search' %}">Искать снова</a>
+            </div>
+        {% else %}
+            <div class="card search-card">
+                <span class="status">Поиск по записям</span>
+                <h1 class="title">Найди нужную запись</h1>
+                <p class="subtitle">Введите слово или фразу, чтобы быстро найти похожие посты.</p>
+
+                <form class="search-form" method="get" novalidate>
+                    <div class="field">
+                        <label class="label" for="{{ form.query.id_for_label }}">Запрос</label>
+                        <div class="control">{{ form.query }}</div>
+                        {% if form.query.errors %}
+                            <div class="error" role="alert">{{ form.query.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" type="submit">
+                            Найти
+                            <span class="btn-glow" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/search.js' %}"></script>
+{% endblock %}

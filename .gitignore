@@ -22,3 +22,7 @@ ENV/
 .env
 .env.*
 !.env.example
+
+# Other shit
+mysite_data.json
+db.sqlite3

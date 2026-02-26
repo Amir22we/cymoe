@@ -5,6 +5,8 @@ gunicorn==23.0.0
 Markdown==3.10.2
 nh3==0.3.3
 packaging==26.0
+psycopg==3.3.3
+psycopg-binary==3.3.3
 python-dotenv==1.2.1
 sqlparse==0.5.5
 unicode==2.9

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm
+from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm, SearchForm
 from .models import Post, CustomTag, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
@@ -12,6 +12,7 @@ from django.conf import settings
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
 from django.db.models import Count
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 
 # Главная страница
 def index(request):
@@ -214,3 +215,19 @@ def post_comment(request, post_id):
         return redirect(post.get_absolute_url())
 
     return render(request, 'notes/comment.html',{'post': post, 'form': form, 'comment': comment})
+
+# Поиск постов
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.objects.annotate(similarity = TrigramSimilarity('title', query)).filter(similarity__gte=0.1).order_by('-similarity')
+
+    return render(request, 'notes/search.html', {'form': form, 'query': query, 'results': results})
+
+    
