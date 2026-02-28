@@ -15,6 +15,9 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes', 'on')
 
 ALLOWED_HOSTS = ['*']
 
+RESEND_API_KEY = os.environ["RESEND_API_KEY"]
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "onboarding@resend.dev")
+
 SITE_ID = int(os.getenv('SITE_ID', '6'))
 # Application definition
 

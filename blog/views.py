@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 from taggit.models import Tag
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+import resend
 
 # Главная страница
 def index(request):
@@ -176,26 +177,74 @@ def delete_profile(request):
     return render(request, 'profile/delete_profile.html')
 
 # Отправка постов
+# def post_share(request, post_id):
+#     post = get_object_or_404(Post, id=post_id)
+#     sent = False
+#     if request.method == "POST":
+#         form = EmaiPostForm(request.POST)
+#         if form.is_valid():
+#             cd = form.cleaned_data
+#             post_url = request.build_absolute_uri(post.get_absolute_url())
+#             subject = f"{cd['name']} рекомендует " \
+#                       f"{post.title}"
+#             message = f"Читай {post.title} в {post_url}\n\n" \
+#                       f"{cd['name']}\'s ({cd['email']}) Комент: {cd['comments']}"
+#             send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['to']])
+
+#             sent = True
+
+#     else:   
+#         form = EmaiPostForm()
+
+#     return render(request, 'notes/share.html', {'post': post, 'form': form, 'sent': sent})
+
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     sent = False
+
     if request.method == "POST":
         form = EmaiPostForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = f"{cd['name']} рекомендует " \
-                      f"{post.title}"
-            message = f"Читай {post.title} в {post_url}\n\n" \
-                      f"{cd['name']}\'s ({cd['email']}) Комент: {cd['comments']}"
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['to']])
+
+            subject = f"{cd['name']} рекомендует {post.title}"
+
+            text_content = (
+                f"Читай {post.title} по ссылке:\n{post_url}\n\n"
+                f"Комментарий от {cd['name']} ({cd['email']}):\n"
+                f"{cd['comments']}"
+            )
+
+            html_content = f"""
+                <h3>{cd['name']} рекомендует пост</h3>
+                <p>
+                    <strong>{post.title}</strong><br>
+                    <a href="{post_url}">{post_url}</a>
+                </p>
+                <p>
+                    Комментарий от {cd['name']} ({cd['email']}):
+                </p>
+                <blockquote>{cd['comments']}</blockquote>
+            """
+
+            resend.Emails.send({
+                "from": settings.DEFAULT_FROM_EMAIL,
+                "to": [cd["to"]],
+                "subject": subject,
+                "text": text_content,
+                "html": html_content,
+            })
 
             sent = True
-
-    else:   
+    else:
         form = EmaiPostForm()
 
-    return render(request, 'notes/share.html', {'post': post, 'form': form, 'sent': sent})
+    return render(request, "notes/share.html", {
+        "post": post,
+        "form": form,
+        "sent": sent,
+    })
 
 # Коменты под постами
 @login_required
