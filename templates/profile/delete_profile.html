@@ -42,7 +42,7 @@
         </button>
 
         <div class="safe-actions">
-          <a class="btn btn-ghost" href="{% url 'blog:profile' %}">Отмена</a>
+          <a class="btn btn-ghost" href="{% url 'blog:profile' user.username %}">Отмена</a>
           <a class="btn btn-ghost btn-back" href="javascript:history.back()">← Назад</a>
         </div>
       </form>

@@ -93,7 +93,7 @@ class Profile(models.Model):
 
         
     def get_absolute_url(self):
-        return reverse("blog:profile", kwargs={"id": self.id,
-                                                       "slug": self.slug,
-                                                       })
+        return reverse("blog:profile", kwargs={
+        "username": self.user.username
+            })
     

@@ -19,46 +19,46 @@ def index(request):
     return render(request, 'index/index.html')
 
 # Профиль
-def register(request):
-    if request.user.is_authenticated:
-        return redirect('blog:profile')
+# def register(request):
+#     if request.user.is_authenticated:
+#         return redirect('blog:profile')
     
-    if request.method == "POST":
-        form = RegisterUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('blog:index')
-    else:
-        form = RegisterUserForm()
-    return render(request, 'registration/register.html', {"form": form})
+#     if request.method == "POST":
+#         form = RegisterUserForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('blog:index')
+#     else:
+#         form = RegisterUserForm()
+#     return render(request, 'registration/register.html', {"form": form})
 
 
-# Выходи с аккаунта
-def logout_user(request):
-    logout(request)
-    return redirect('blog:index')
+# Выход с аккаунта
+# def logout_user(request):
+#     logout(request)
+#     return redirect('blog:index')
 
 # Вход в аккаунт
-def login_user(request):
-    if request.user.is_authenticated:
-        return redirect('blog:profile')
+# def login_user(request):
+#     if request.user.is_authenticated:
+#         return redirect('blog:profile')
 
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('blog:profile')
-            else:
-                form.add_error(None, "Неверный логин или пароль.")
-    else:
-        form = LoginForm()
+#     if request.method == "POST":
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             username = form.cleaned_data['username']
+#             password = form.cleaned_data['password']
+#             user = authenticate(request, username=username, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 return redirect('blog:profile')
+#             else:
+#                 form.add_error(None, "Неверный логин или пароль.")
+#     else:
+#         form = LoginForm()
 
-    return render(request, 'registration/login.html', {'form': form})
+#     return render(request, 'registration/login.html', {'form': form})
 
 
 # Профиль
@@ -91,7 +91,6 @@ def user_note(request):
 
 
 # Просмотр всех записей
-@login_required
 def view_note(request, tag_slug=None):
     posts = Post.objects.all()
 
@@ -126,7 +125,6 @@ def detail_note(request, id, slug, year, month, day):
 
 
 # Просмотр всех постов
-@login_required
 def detail_note_all(request, id, slug, year, month, day):
     post = get_object_or_404(Post, id=id, slug=slug, publish__year=year, publish__month=month, publish__day=day)
     
@@ -148,7 +146,7 @@ def change_name(request):
         if form.is_valid():
             request.user.username = form.cleaned_data['username']
             request.user.save()
-            return redirect('blog:profile')
+            return redirect('blog:profile', username=request.user.username)
     else:
         form = ChangeName()
     return render(request, 'profile/change_name.html', {'form': form})
@@ -162,7 +160,7 @@ def change_pass(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('blog:profile')
+            return redirect('blog:profile', username=request.user.username)
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'profile/change_pass.html', {'form': form})
@@ -174,11 +172,10 @@ def delete_profile(request):
     if request.method == "POST":
         user = request.user
         user.delete()
-        return redirect('blog:register')
+        return redirect('accounts:signup')
     return render(request, 'profile/delete_profile.html')
 
 # Отправка постов
-@login_required
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     sent = False

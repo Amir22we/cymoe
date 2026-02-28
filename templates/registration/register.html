@@ -42,24 +42,34 @@
         </div>
 
         <div class="field">
-          <label class="label" for="{{ form.password.id_for_label }}">Пароль</label>
+          <label class="label" for="{{ form.password1.id_for_label }}">Пароль</label>
           <div class="control control-pass">
-            {{ form.password }}
+            {{ form.password1 }}
             <button class="eye" type="button" data-toggle="pass1" aria-label="Показать пароль">👁</button>
           </div>
           {% if form.password1.errors %}
-            <div class="error" role="alert">{{ form.password.errors }}</div>
+            <div class="error" role="alert">{{ form.password1.errors }}</div>
           {% endif %}
         </div>
 
         <div class="field">
-          <label class="label" for="{{ form.password2.id_for_label }}">Повтори пароль</label>
+          <label class="label" for="{{ form.email.id_for_label }}">Повтори пароль</label>
           <div class="control control-pass">
             {{ form.password2 }}
             <button class="eye" type="button" data-toggle="pass2" aria-label="Показать пароль">👁</button>
           </div>
           {% if form.password2.errors %}
             <div class="error" role="alert">{{ form.password2.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="{{ form.email.id_for_label }}">Электронная почта</label>
+          <div class="control control-pass">
+            {{ form.email }}
+          </div>
+          {% if form.email.errors %}
+            <div class="error" role="alert">{{ form.email.errors }}</div>
           {% endif %}
         </div>
 
@@ -70,7 +80,7 @@
 
         <div class="auth-foot">
           Уже есть аккаунт?
-          <a class="link" href="{% url 'blog:login_user' %}">Войти</a>
+          <a class="link" href="{% url 'login' %}">Войти</a>
         </div>
       </form>
     </div>
