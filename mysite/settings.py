@@ -15,7 +15,6 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes', 'on')
 
 ALLOWED_HOSTS = ['*']
 
-RESEND_API_KEY = os.environ["RESEND_API_KEY"]
 
 SITE_ID = int(os.getenv('SITE_ID', '6'))
 # Application definition
@@ -153,11 +152,11 @@ CSRF_TRUSTED_ORIGINS = [
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = "/"
 
-EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
 
 ANYMAIL = {
-    "RESEND_API_KEY": os.getenv("RESEND_API_KEY", ""),
+    "BREVO_API_KEY": os.getenv("BREVO_API_KEY", ""),
 }
 
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "onboarding@resend.dev")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "student1380@tuit.uz")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
