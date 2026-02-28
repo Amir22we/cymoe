@@ -11,11 +11,11 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-y6kp(m_zgp(q0zcj31575v_wn#z1@95frotd@!wg!1)d_lig1n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes', 'on')
 
 ALLOWED_HOSTS = ['*']
 
-SITE_ID = 6
+SITE_ID = int(os.getenv('SITE_ID', '6'))
 # Application definition
 
 INSTALLED_APPS = [
