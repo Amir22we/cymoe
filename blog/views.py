@@ -14,6 +14,8 @@ from taggit.models import Tag
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 import resend
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 
 # Главная страница
 def index(request):
@@ -198,6 +200,10 @@ def delete_profile(request):
 
 #     return render(request, 'notes/share.html', {'post': post, 'form': form, 'sent': sent})
 
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     sent = False
@@ -207,34 +213,28 @@ def post_share(request, post_id):
         if form.is_valid():
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
-
             subject = f"{cd['name']} рекомендует {post.title}"
 
-            text_content = (
-                f"Читай {post.title} по ссылке:\n{post_url}\n\n"
-                f"Комментарий от {cd['name']} ({cd['email']}):\n"
-                f"{cd['comments']}"
+            html_content = render_to_string(
+                "notes/share_template_html.html",
+                {
+                    "post": post,
+                    "post_url": post_url,
+                    "name": cd["name"],
+                    "email": cd["email"],
+                    "comments": cd["comments"],
+                },
             )
 
-            html_content = f"""
-                <h3>{cd['name']} рекомендует пост</h3>
-                <p>
-                    <strong>{post.title}</strong><br>
-                    <a href="{post_url}">{post_url}</a>
-                </p>
-                <p>
-                    Комментарий от {cd['name']} ({cd['email']}):
-                </p>
-                <blockquote>{cd['comments']}</blockquote>
-            """
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=html_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[cd["to"]],
+            )
 
-            resend.Emails.send({
-                "from": settings.DEFAULT_FROM_EMAIL,
-                "to": [cd["to"]],
-                "subject": subject,
-                "text": text_content,
-                "html": html_content,
-            })
+            email.content_subtype = "html"
+            email.send()
 
             sent = True
     else:
@@ -243,7 +243,7 @@ def post_share(request, post_id):
     return render(request, "notes/share.html", {
         "post": post,
         "form": form,
-        "sent": sent,
+        "sent": sent
     })
 
 # Коменты под постами
