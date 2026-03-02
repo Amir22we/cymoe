@@ -32,6 +32,26 @@
         {% endif %}
 
         <div class="field">
+          <label class="label" for="{{ form.first_name.id_for_label }}">Имя</label>
+          <div class="control">
+            {{ form.first_name }}
+          </div>
+          {% if form.first_name.errors %}
+            <div class="error" role="alert">{{ form.first_name.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="{{ form.last_name.id_for_label }}">Фамилия</label>
+          <div class="control">
+            {{ form.last_name }}
+          </div>
+          {% if form.last_name.errors %}
+            <div class="error" role="alert">{{ form.last_name.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
           <label class="label" for="{{ form.username.id_for_label }}">Юзернейм</label>
           <div class="control">
             {{ form.username }}

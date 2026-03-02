@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Выход — CYMOE{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/logout.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="logout">
+  <div class="logout-wrap">
+    <div class="logout-card">
+      <div class="logout-orb logout-orb--a" aria-hidden="true"></div>
+      <div class="logout-orb logout-orb--b" aria-hidden="true"></div>
+
+      <div class="logout-icon" aria-hidden="true">
+        <svg class="logout-icon-svg" viewBox="0 0 64 64" fill="none">
+          <circle class="logout-icon-ring" cx="32" cy="32" r="28" stroke="url(#lg)" stroke-width="2.5"/>
+          <path class="logout-icon-check" d="M20 33 l8 8 l16 -18" stroke="url(#lg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="64" y2="64">
+              <stop offset="0%" stop-color="rgba(160,160,255,0.95)"/>
+              <stop offset="100%" stop-color="rgba(110,255,210,0.85)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <h1 class="logout-title">До встречи</h1>
+      <p class="logout-text">Ты успешно вышел из аккаунта. Твои данные в безопасности.</p>
+
+      <a class="btn btn-primary" href="{% url 'login' %}">
+        Войти снова
+        <span class="btn-glow" aria-hidden="true"></span>
+      </a>
+
+      <div class="logout-foot">
+        <span class="logout-foot-dot" aria-hidden="true"></span>
+        Сессия завершена
+      </div>
+    </div>
+
+    <div class="logout-particles" aria-hidden="true">
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/logout.js' %}"></script>
+{% endblock %}

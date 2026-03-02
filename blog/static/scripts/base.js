@@ -9,12 +9,14 @@
 
   const openMenu = () => {
     header.classList.add("is-open");
+    document.body.classList.add("menu-open");
     burger.setAttribute("aria-expanded", "true");
     mobileMenu.setAttribute("aria-hidden", "false");
   };
 
   const closeMenu = () => {
     header.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
     burger.setAttribute("aria-expanded", "false");
     mobileMenu.setAttribute("aria-hidden", "true");
   };
@@ -24,8 +26,8 @@
   });
 
   mobileMenu.addEventListener("click", (e) => {
-    const a = e.target.closest("a");
-    if (a) closeMenu();
+    const clickable = e.target.closest("a, button");
+    if (clickable) closeMenu();
   });
 
   document.addEventListener("keydown", (e) => {
@@ -34,5 +36,9 @@
 
   document.addEventListener("click", (e) => {
     if (!header.contains(e.target)) closeMenu();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 860) closeMenu();
   });
 })();

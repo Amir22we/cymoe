@@ -53,6 +53,18 @@
           {% endif %}
         </div>
 
+        <div class="field field-consent">
+          <div class="control control-consent">
+            {{ form.remember_me }}
+            <label class="consent-text" for="{{ form.remember_me.id_for_label }}">
+              Разрешаю использовать cookie для входа и сохранения сессии.
+            </label>
+          </div>
+          {% if form.remember_me.errors %}
+            <div class="error" role="alert">{{ form.remember_me.errors }}</div>
+          {% endif %}
+        </div>
+
         <button class="btn btn-primary" type="submit">
           Войти
           <span class="btn-glow" aria-hidden="true"></span>
@@ -72,7 +84,20 @@
           Вход нужен исключительно, чтобы дать тебе доступ к твоим записям.
           Никто не обязан знать, кто ты.
         </div>
+          
         <div class="side-pill">CYMOE • Clean Your Mouse Of Emotions</div>
+      </div>
+    </div>
+
+    <div class="auth-side" aria-hidden="true">
+      <div class="side-card">
+        <div class="side-text">
+          {% if messages %}
+            {% for message in messages %}
+              <li> {{ message }}</li>
+            {% endfor %}
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

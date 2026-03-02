@@ -21,30 +21,27 @@
         <span class="brand-name">CYMOE</span>
       </a>
 
-      <nav class="nav" aria-label="Главная навигация">
-      {% if request.user.is_authenticated %}  
-        <a class="nav-link" href="{% url 'blog:create_note' %}">Создать запись</a>
-        <a class="nav-link" href="{% url 'blog:view_note' %}">Просмотреть записи</a>
+      <nav class="nav" aria-label="Основная навигация">
+      {% if request.user.is_authenticated %}
+        <a class="nav-link" href="{% url 'blog:create_note' %}">Создать</a>
+        <a class="nav-link" href="{% url 'blog:view_note' %}">Все записи</a>
         <a class="nav-link" href="{% url 'blog:user_note' %}">Мои записи</a>
-        <a class="nav-link" href="{% url 'blog:post_search' %}">Поиск постов</a>
+        <a class="nav-link" href="{% url 'blog:post_search' %}">Поиск</a>
+        <a class="nav-link nav-link--ghost" href="{% url 'blog:profile' user.username %}">Профиль</a>
+        <a class="nav-link nav-link--ghost" href="{% url 'password_reset' %}">Сброс пароля</a>
+        <form action="{% url 'logout' %}" method="post" class="nav-form">
+          {% csrf_token %}
+          <button type="submit" class="nav-link nav-link--ghost nav-link-btn">Выход</button>
+        </form>
       {% else %}
-        <a class="nav-link" href="{% url 'accounts:signup' %}">Создать запись</a>
-        <a class="nav-link" href="{% url 'blog:view_note' %}">Просмотреть записи</a>
+        <a class="nav-link" href="{% url 'accounts:signup' %}">Создать</a>
+        <a class="nav-link" href="{% url 'blog:view_note' %}">Все записи</a>
         <a class="nav-link" href="{% url 'accounts:signup' %}">Мои записи</a>
-        <a class="nav-link" href="{% url 'blog:post_search' %}">Поиск постов</a>
+        <a class="nav-link" href="{% url 'blog:post_search' %}">Поиск</a>
+        <a class="nav-link nav-link--ghost" href="{% url 'accounts:signup' %}">Регистрация</a>
+        <a class="nav-link nav-link--ghost" href="{% url 'password_reset' %}">Сброс пароля</a>
+        <a class="nav-link nav-link--accent" href="{% url 'login' %}">Вход</a>
       {% endif %}
-        {% if request.user.is_authenticated %}
-          <a class="nav-link nav-link--ghost" href="{% url 'blog:profile' user.username %}">Профиль</a>
-          <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="nav-link nav-link--ghost">Выход</button>
-          </form>
-          <a class="nav-link nav-link--ghost" href="{% url 'password_reset' %}">Сбросить пароль</a>
-        {% else %}
-          <a class="nav-link nav-link--ghost" href="{% url 'accounts:signup' %}">Регистрация</a>
-          <a class="nav-link nav-link--accent" href="{% url 'login' %}">Вход</a>
-          <a class="nav-link nav-link--ghost" href="{% url 'password_reset' %}">Сбросить пароль</a>
-        {% endif %}
       </nav>
 
       <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false">
@@ -57,15 +54,15 @@
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <div class="container mobile-menu-inner">
       {% if request.user.is_authenticated %}
-        <a class="mobile-link" href="{% url 'blog:create_note' %}">Создать запись</a>
-        <a class="mobile-link" href="{% url 'blog:view_note' %}">Просмотреть записи</a>
+        <a class="mobile-link" href="{% url 'blog:create_note' %}">Создать</a>
+        <a class="mobile-link" href="{% url 'blog:view_note' %}">Все записи</a>
         <a class="mobile-link" href="{% url 'blog:user_note' %}">Мои записи</a>
-        <a class="mobile-link" href="{% url 'blog:post_search' %}">Поиск постов</a>
+        <a class="mobile-link" href="{% url 'blog:post_search' %}">Поиск</a>
       {% else %}
-        <a class="mobile-link" href="{% url 'accounts:signup' %}">Создать запись</a>
-        <a class="mobile-link" href="{% url 'blog:view_note' %}">Просмотреть записи</a>
+        <a class="mobile-link" href="{% url 'accounts:signup' %}">Создать</a>
+        <a class="mobile-link" href="{% url 'blog:view_note' %}">Все записи</a>
         <a class="mobile-link" href="{% url 'accounts:signup' %}">Мои записи</a>
-        <a class="mobile-link" href="{% url 'blog:post_search' %}">Поиск постов</a>
+        <a class="mobile-link" href="{% url 'blog:post_search' %}">Поиск</a>
       {% endif %}
         <div class="mobile-split"></div>
 
@@ -75,12 +72,12 @@
             {% csrf_token %}
             <button type="submit" class="mobile-link mobile-link--ghost">Выход</button>
           </form>
-          <a class="mobile-link mobile-link--ghost" href="{% url 'password_reset' %}">Сбросить пароль</a>
+          <a class="mobile-link mobile-link--ghost" href="{% url 'password_reset' %}">Сброс пароля</a>
           {% comment %} <a class="mobile-link mobile-link--ghost" href="{% url 'blog:logout_user' %}">Выход</a> {% endcomment %}
         {% else %}
           <a class="mobile-link mobile-link--ghost" href="{% url 'accounts:signup' %}">Регистрация</a>
           <a class="mobile-link mobile-link--accent" href="{% url 'login' %}">Вход</a>
-          <a class="mobile-link mobile-link--ghost" href="{% url 'password_reset' %}">Сбросить пароль</a>
+          <a class="mobile-link mobile-link--ghost" href="{% url 'password_reset' %}">Сброс пароля</a>
         {% endif %}
       </div>
     </div>
