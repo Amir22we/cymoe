@@ -81,7 +81,7 @@ class CustomTag(TagBase):
 class TaggedPost(GenericTaggedItemBase):
     tag = models.ForeignKey(CustomTag, on_delete=models.CASCADE, related_name="tagged_posts")
 
-class Profile(models.Model):
+class BlogProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=200, blank=True)
 
@@ -93,7 +93,7 @@ class Profile(models.Model):
 
         
     def get_absolute_url(self):
-        return reverse("blog:profile", kwargs={
+        return reverse("accounts:profile", kwargs={
         "username": self.user.username
             })
     

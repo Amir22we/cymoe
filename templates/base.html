@@ -27,7 +27,7 @@
         <a class="nav-link" href="{% url 'blog:view_note' %}">Все записи</a>
         <a class="nav-link" href="{% url 'blog:user_note' %}">Мои записи</a>
         <a class="nav-link" href="{% url 'blog:post_search' %}">Поиск</a>
-        <a class="nav-link nav-link--ghost" href="{% url 'blog:profile' user.username %}">Профиль</a>
+        <a class="nav-link nav-link--ghost" href="{% url 'accounts:profile'%}">Профиль</a>
         <a class="nav-link nav-link--ghost" href="{% url 'password_reset' %}">Сброс пароля</a>
         <form action="{% url 'logout' %}" method="post" class="nav-form">
           {% csrf_token %}
@@ -67,7 +67,7 @@
         <div class="mobile-split"></div>
 
         {% if request.user.is_authenticated %}
-          <a class="mobile-link mobile-link--ghost" href="{% url 'blog:profile' user.username %}">Профиль</a>
+          <a class="mobile-link mobile-link--ghost" href="{% url 'accounts:profile'%}">Профиль</a>
           <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="mobile-link mobile-link--ghost">Выход</button>

@@ -1,111 +1,234 @@
 {% extends "base.html" %}
+{% block title %}Профиль{% endblock title %}
 {% load static %}
-
-{% block title %}Профиль — CYMOE{% endblock %}
-
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
-
 {% block content %}
 <section class="profile">
   <div class="profile-grid">
 
-    <div class="card card-main">
-      <div class="card-head">
-        <div class="avatar" aria-hidden="true">
-          <span class="avatar-inner">{{ request.user.username|first|upper }}</span>
-        </div>
+    <div class="card">
+      <div class="card-main">
+        <div class="card-head">
 
-        <div class="who">
-          <h1 class="name">{{ request.user.username }}</h1>
-          <div class="meta">
-            <span class="meta-item">
-              <span class="meta-label">Дата регистрации:</span>
-              <span class="meta-value">
-                {{ request.user.date_joined|date:"d.m.Y H:i" }}
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <div class="hint" role="note">
-          <span class="hint-dot" aria-hidden="true"></span>
-          <div class="hint-text">
-            Здесь твой профиль. Никаких настоящих данных не нужно. Чем меньше личного, тем лучше.
-          </div>
-        </div>
-
-        <div class="actions">
-          <a class="btn btn-primary" href="{% url 'blog:user_note' %}">
-            Мои записи
-            <span class="btn-glow" aria-hidden="true"></span>
+          <a class="avatar avatar--round" href="{{ user.profile.avatar.url }}" title="Открыть аватар в полном размере" aria-label="Открыть аватар">
+            {% if user.profile.avatar %}
+              <img
+                class="avatar-img"
+                src="{{ user.profile.avatar.url }}"
+                alt="Аватар {{ user.username }}"
+                loading="lazy"
+              />
+            {% else %}
+              <span class="avatar-inner">{{ user.username|first|upper }}</span>
+            {% endif %}
           </a>
 
-          <a class="btn btn-ghost" href="{% url 'blog:create_note' %}">
-            Создать запись
-          </a>
+          <div class="who">
+            <h1 class="name">{{ user.username }}</h1>
+            <div class="who-badge">Личный профиль</div>
+            <div class="profile-state" id="profileState" data-pristine="Без изменений" data-dirty="Есть несохранённые изменения">
+              Без изменений
+            </div>
+            <div class="meta">
+              <span class="meta-label">Эл. почта:</span>
+              <span>{{ user.email|default:"не указана" }}</span>
+            </div>
+          </div>
+        </div>
+
+        {% if user_form.errors or profile_form.errors %}
+          <div class="hint hint--error" role="alert">
+            <div class="hint-dot"></div>
+            <div class="hint-text">
+              <strong>Проверьте поля с ошибками:</strong>
+              <div class="form-errors">
+                {% for field, errs in user_form.errors.items %}
+                  {% for err in errs %}
+                    <div>• {{ err }}</div>
+                  {% endfor %}
+                {% endfor %}
+                {% for field, errs in profile_form.errors.items %}
+                  {% for err in errs %}
+                    <div>• {{ err }}</div>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="hint">
+            <div class="hint-dot"></div>
+            <div class="hint-text">
+              Здесь можно обновить данные профиля. Изменения применятся после нажатия «Сохранить».
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="card-body">
+          <form class="profile-form" id="profileForm" method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <div class="form-grid">
+              <div class="field">
+                <label class="label" for="{{ user_form.username.id_for_label }}">Имя пользователя</label>
+                {{ user_form.username }}
+                {% if user_form.username.help_text %}<div class="help">{{ user_form.username.help_text }}</div>{% endif %}
+                {% if user_form.username.errors %}
+                  <div class="field-errors" role="alert">
+                    {% for err in user_form.username.errors %}
+                      <div>• {{ err }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="field">
+                <label class="label" for="{{ user_form.email.id_for_label }}">Эл. почта</label>
+                {{ user_form.email }}
+                {% if user_form.email.errors %}
+                  <div class="field-errors" role="alert">
+                    {% for err in user_form.email.errors %}
+                      <div>• {{ err }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="field">
+                <label class="label" for="{{ profile_form.avatar.id_for_label }}">Сменить аватар</label>
+                {{ profile_form.avatar }}
+                <div class="help">
+                  Поддерживаются PNG/JPG. Лучше использовать квадратное изображение.
+                  <span class="file-name" id="avatarFileName">Файл не выбран</span>
+                </div>
+                {% if profile_form.avatar.errors %}
+                  <div class="field-errors" role="alert">
+                    {% for err in profile_form.avatar.errors %}
+                      <div>• {{ err }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="field">
+                <div class="label-row">
+                  <label class="label" for="{{ profile_form.bio.id_for_label }}">О себе</label>
+                  <span class="counter" data-counter-for="{{ profile_form.bio.id_for_label }}">0</span>
+                </div>
+                {{ profile_form.bio }}
+                {% if profile_form.bio.errors %}
+                  <div class="field-errors" role="alert">
+                    {% for err in profile_form.bio.errors %}
+                      <div>• {{ err }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="field">
+                <div class="label-row">
+                  <label class="label" for="{{ profile_form.quote.id_for_label }}">Цитата</label>
+                  <span class="counter" data-counter-for="{{ profile_form.quote.id_for_label }}">0</span>
+                </div>
+                {{ profile_form.quote }}
+                {% if profile_form.quote.errors %}
+                  <div class="field-errors" role="alert">
+                    {% for err in profile_form.quote.errors %}
+                      <div>• {{ err }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="field field--row">
+                <div class="label">Пароль</div>
+                <a class="link" href="{% url 'password_change' %}">Сменить пароль</a>
+              </div>
+            </div>
+
+            <div class="live-preview" aria-live="polite">
+              <div class="live-preview-title">Как будет выглядеть профиль</div>
+
+              <div class="live-preview-card">
+                <div class="live-preview-head">
+                  <div class="live-avatar">
+                    <img id="avatarLivePreview" src="{{ user.profile.avatar.url }}" alt="Превью аватара {{ user.username }}" loading="lazy">
+                  </div>
+
+                  <div class="live-who">
+                    <div class="live-name" id="usernameLivePreview" data-empty="Пользователь">{{ user.username }}</div>
+                    <div class="live-mail" id="emailLivePreview" data-empty="Почта не указана">{{ user.email|default:"Почта не указана" }}</div>
+                  </div>
+                </div>
+
+                <div class="live-preview-body">
+                  <p class="live-bio" id="bioLivePreview" data-empty="Расскажите немного о себе.">{{ user.profile.bio|default:"Расскажите немного о себе." }}</p>
+                  <p class="live-quote" id="quoteLivePreview" data-empty="Добавьте личную цитату.">
+                    {% if user.profile.quote %}«{{ user.profile.quote }}»{% else %}«Добавьте личную цитату.»{% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn btn-primary" id="saveProfileBtn" type="submit">
+                <span class="btn-glow"></span>
+                Сохранить
+              </button>
+
+              <button class="btn btn-ghost" type="reset">Сбросить</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-
-    <div class="card card-danger">
+ 
+    <aside class="card card-danger">
       <div class="danger-head">
-        <div class="danger-title">Аккуратно</div>
+        <div class="danger-title">Опасная зона</div>
         <div class="danger-sub">
-          Эти кнопки меняют аккаунт. Нажимать “просто посмотреть” не лучшая привычка.
+            Здесь находятся необратимые действия. Используйте их только если уверены.
         </div>
       </div>
 
       <div class="danger-actions">
-        <a class="danger-btn" href="{% url 'blog:change_name' %}">
-          <span class="danger-ico" aria-hidden="true">✎</span>
-          Изменить имя
-        </a>
-
-        <a class="danger-btn" href="{% url 'blog:change_pass' %}">
-          <span class="danger-ico" aria-hidden="true">🔒</span>
-          Изменить пароль
-        </a>
-
-        <a class="danger-btn danger-btn--red" type="button" id="openDeleteModal" href="{% url 'blog:delete_profile' %}">
-          <span class="danger-ico" aria-hidden="true">🗑</span>
+        <button class="danger-btn" type="button" id="openDeleteModal">
+          <span class="danger-ico">🧨</span>
           Удалить аккаунт
-        </a>
+        </button>
 
         <div class="danger-note">
-          Удаление аккаунта обычно необратимо. Если ты не уверен(а), не делай этого.
+          Удаление аккаунта необратимо: профиль и связанные данные будут удалены.
         </div>
       </div>
-    </div>
+    </aside>
 
-  </div>
-
-  <!-- Modal confirm delete -->
-  <div class="modal" id="deleteModal" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-backdrop" data-close="1"></div>
-
-    <div class="modal-card" role="document" aria-label="Подтверждение удаления аккаунта">
-      <div class="modal-title">Удалить аккаунт?</div>
-      <div class="modal-text">
-        Это действие удалит аккаунт. Если у тебя есть важные записи, подумай дважды.
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn btn-ghost" type="button" data-close="1">Отмена</button>
-
-        <form method="post" action="">
-          {% csrf_token %}
-          <button class="btn btn-danger" type="submit">Да, удалить</button>
-        </form>
-      </div>
-    </div>
   </div>
 </section>
-{% endblock %}
+
+<div class="modal" id="deleteModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close="1"></div>
+
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+    <div class="modal-title" id="deleteTitle">Удалить аккаунт?</div>
+    <div class="modal-text">
+      Это действие нельзя отменить. Если вы уверены, подтвердите удаление аккаунта.
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" type="button" data-close="1">Отмена</button>
+
+      <form method="post" action="{% url 'blog:delete_profile' %}">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Удалить</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
 
 {% block extra_js %}
-<script src=""></script>
+<script src="{% static 'scripts/profile.js' %}"></script>
 {% endblock %}

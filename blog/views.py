@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm, SearchForm
-from .models import Post, CustomTag, Profile
+from .models import Post, CustomTag, BlogProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.text import slugify
@@ -24,7 +24,7 @@ def index(request):
 # Профиль
 # def register(request):
 #     if request.user.is_authenticated:
-#         return redirect('blog:profile')
+#         return redirect('accounts:profile')
     
 #     if request.method == "POST":
 #         form = RegisterUserForm(request.POST)
@@ -45,7 +45,7 @@ def index(request):
 # Вход в аккаунт
 # def login_user(request):
 #     if request.user.is_authenticated:
-#         return redirect('blog:profile')
+#         return redirect('accounts:profile')
 
 #     if request.method == "POST":
 #         form = LoginForm(request.POST)
@@ -55,7 +55,7 @@ def index(request):
 #             user = authenticate(request, username=username, password=password)
 #             if user is not None:
 #                 login(request, user)
-#                 return redirect('blog:profile')
+#                 return redirect('accounts:profile')
 #             else:
 #                 form.add_error(None, "Неверный логин или пароль.")
 #     else:
@@ -65,10 +65,10 @@ def index(request):
 
 
 # Профиль
-@login_required
-def profile(request, username):
-    profile = get_object_or_404(User, username=username)
-    return render(request, "profile/profile.html", {'profile': profile})
+# @login_required
+# def profile(request, username):
+#     profile = get_object_or_404(User, username=username)
+#     return render(request, "profile/profile.html", {'profile': profile})
 
 # Создание записи
 @login_required
@@ -149,7 +149,7 @@ def change_name(request):
         if form.is_valid():
             request.user.username = form.cleaned_data['username']
             request.user.save()
-            return redirect('blog:profile', username=request.user.username)
+            return redirect('accounts:profile', username=request.user.username)
     else:
         form = ChangeName()
     return render(request, 'profile/change_name.html', {'form': form})
@@ -163,7 +163,7 @@ def change_pass(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('blog:profile', username=request.user.username)
+            return redirect('accounts:profile', username=request.user.username)
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'profile/change_pass.html', {'form': form})

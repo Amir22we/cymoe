@@ -151,7 +151,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = "/accounts/logout/"
-
+LOGIN_URL = "/accounts/login/"
 
 EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
 
@@ -163,3 +163,6 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "student1380@tuit.uz")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'
