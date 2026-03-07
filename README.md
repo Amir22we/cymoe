@@ -95,4 +95,4 @@ python manage.py runserver
 - Язык интерфейса: `ru`
 - Часовой пояс: `Asia/Tashkent`
 
-https://github-readme-stats.vercel.app/api?username=USERNAME
+https://github-readme-stats.vercel.app/api?username=Amir22we
