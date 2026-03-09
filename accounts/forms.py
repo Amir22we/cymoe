@@ -39,9 +39,23 @@ class UpdateUserForm(forms.ModelForm):
 class UpdateProfileForm(forms.ModelForm):
     avatar = forms.ImageField(widget=forms.FileInput())
     bio = forms.CharField(widget=forms.Textarea(attrs={'rows': 5}))
+    quote = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
 
     class Meta:
         model = Profile
         fields = ['avatar', 'bio', 'quote']
 
+class CheckProfile(forms.ModelForm):
+    username = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
 
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username', '').strip()
+        email = cleaned_data.get('email', '').strip()
+
+        if not username and not email:
+            raise forms.ValidationError('Введи хоть что то из этого')
+    class Meta:
+        model = User
+        fields = ['username', 'email']

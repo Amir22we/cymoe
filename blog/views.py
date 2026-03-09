@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm, SearchForm
+from .forms import RegisterUserForm, LoginForm, PostForm, ChangeName, EmaiPostForm, CommentForm, SearchForm, CheckProfile
 from .models import Post, CustomTag, BlogProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.text import slugify
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
@@ -15,7 +15,7 @@ from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 import resend
 from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
+
 
 # Главная страница
 def index(request):
@@ -200,9 +200,6 @@ def delete_profile(request):
 
 #     return render(request, 'notes/share.html', {'post': post, 'form': form, 'sent': sent})
 
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
 
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -275,5 +272,7 @@ def post_search(request):
             results = Post.objects.annotate(similarity = TrigramSimilarity('title', query)).filter(similarity__gte=0.1).order_by('-similarity')
 
     return render(request, 'notes/search.html', {'form': form, 'query': query, 'results': results})
+
+
 
     

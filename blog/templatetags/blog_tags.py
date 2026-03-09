@@ -1,5 +1,5 @@
 from django import template
-from ..models import Post
+from ..models import Post, User
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 import markdown
@@ -24,3 +24,8 @@ def get_most_commented_posts(count=5):
 def markdown_format(text):
     clean_text = nh3.clean(markdown.markdown(text))
     return mark_safe(clean_text)
+
+# Все пользователи - стата
+@register.simple_tag
+def total_users():
+    return User.objects.count()

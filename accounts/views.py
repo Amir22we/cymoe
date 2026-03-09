@@ -1,10 +1,11 @@
 from django.urls import reverse_lazy
 from django.views import generic
-from .forms import SignUpForm, LoginForm, UpdateProfileForm, UpdateUserForm
+from .forms import SignUpForm, LoginForm, UpdateProfileForm, UpdateUserForm, CheckProfile
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.models import User
 
 class SignUpView(generic.CreateView):
     form_class = SignUpForm
@@ -64,3 +65,16 @@ def profile(request):
     return render(request, 'profile/profile.html', {'user_form': user_form, 'profile_form': profile_form})
     
         
+def check_profile(request):
+    username = None
+    email = None
+    result = None
+    form = CheckProfile()
+    if form.is_valid():
+        username = form.cleaned_data['username']
+        email = form.cleaned_data['email']
+        result = User.objects.filter(username__icontains=username, email__icontains=email)
+    else:
+        form = CheckProfile(request.POST)
+    return render(request, 'profile/check_profile.html', {'form': form, 'username': username, 'email': email, 'result': result})
+            

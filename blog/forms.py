@@ -59,3 +59,7 @@ class CommentForm(forms.ModelForm):
 class SearchForm(forms.Form):
     query = forms.CharField()
     
+class CheckProfile(forms.Form):
+    name = forms.CharField()
+    email = forms.EmailField()
+    

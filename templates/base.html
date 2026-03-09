@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0b0d12" />
-
+  {% load django_bootstrap5 %}
   <title>{% block title %}CYMOE{% endblock %}</title>
 
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -96,6 +96,7 @@
         <div class="footer-text">
           <p class="footer-description">Сайт разработан для помощи людям. Здесь можно анонимно высказываться и выпускать эмоции.</p>
           <p class="footer-stats">В целом было написано: <span class="footer-stats-value">{% total_posts %}</span> постов</p>
+          <p class="footer-stats">В целом зарегистрировано: <span class="footer-stats-value">{% total_users %}</span> пользователей</p>
           {% show_latest_posts 3 %}
           <h3 class="footer-list-title">Самые популярные посты</h3>
           {% get_most_commented_posts as most_commented_posts %}

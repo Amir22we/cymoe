@@ -14,6 +14,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls', namespace='blog')),
     path('accounts/', include('accounts.urls')),
+    path("accounts/", include("allauth.urls")),
+    path('accounts/', include('django.contrib.auth.urls')),
     path(
         'accounts/password_reset/',
         auth_views.PasswordResetView.as_view(
@@ -24,6 +26,7 @@ urlpatterns = [
         ),
         name='password_reset',
     ),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('api/', include('blog_api.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
