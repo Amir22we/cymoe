@@ -151,9 +151,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
-
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
-STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STORAGES = {
     "default": {
@@ -168,9 +167,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://cymoe-production-f8ac.up.railway.app',
-    'https://*.railway.app', 
-    'https://happy-bear-d494cc53.tunnl.gg'
-    'http://135.222.41.64/'
+    'https://*.railway.app',
+    'https://happy-bear-d494cc53.tunnl.gg',
+    'http://135.222.41.64',
 ]
 
 # EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
