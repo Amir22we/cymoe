@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-y6kp(m_zgp(q0zcj31575v_wn#z1@95frotd@!wg!1)d_lig1n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes', 'on')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ALLOWED_HOSTS = ["mrrooty.dev", "www.mrrooty.dev", "135.222.41.64"]
 
 
 SITE_ID = int(os.getenv('SITE_ID', '6'))
@@ -173,6 +173,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',
     'https://happy-bear-d494cc53.tunnl.gg',
     'http://135.222.41.64',
+    'mrrooty.dev', 
+    'www.mrrooty.dev',
 ]
 
 # EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
