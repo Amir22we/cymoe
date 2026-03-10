@@ -2,11 +2,12 @@ from django.urls import path, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.sitemaps.views import sitemap
-from blog.sitemaps import PostSitemap
+from blog.sitemaps import PostSitemap, StaticSitemap
 from django.conf import settings
 from django.conf.urls.static import static
 
 sitemaps = {
+    'static': StaticSitemap,
     'posts': PostSitemap,
 }
 
