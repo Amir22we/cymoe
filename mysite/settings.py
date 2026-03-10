@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework.authtoken',
     'drf_spectacular',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
 ]
     
 MIDDLEWARE = [
