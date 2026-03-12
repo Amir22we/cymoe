@@ -225,3 +225,4 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {'auth_date_validity': 30},
     }
 }
+
